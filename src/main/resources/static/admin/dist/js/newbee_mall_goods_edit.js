@@ -118,6 +118,7 @@ $('#saveButton').click(function () {
     var goodsSellStatus = $("input[name='goodsSellStatus']:checked").val();
     var goodsDetailContent = editor.getHtml();
     var goodsCoverImg = $('#goodsCoverImg')[0].src;
+    console.log(goodsCategoryId)
     if (isNull(goodsCategoryId)) {
         Swal.fire({
             text: "请选择分类",

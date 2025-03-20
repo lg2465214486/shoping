@@ -7,7 +7,6 @@ $(function () {
         colModel: [
             {label: 'id', name: 'configId', index: 'configId', width: 50, key: true, hidden: true},
             {label: '配置项名称', name: 'configName', index: 'configName', width: 180},
-            {label: '跳转链接', name: 'redirectUrl', index: 'redirectUrl', width: 120},
             {label: '排序值', name: 'configRank', index: 'configRank', width: 120},
             {label: '商品编号', name: 'goodsId', index: 'goodsId', width: 120},
             {label: '添加时间', name: 'createTime', index: 'createTime', width: 120}
@@ -56,7 +55,7 @@ function reload() {
 
 function configAdd() {
     reset();
-    $('.modal-title').html('首页配置项添加');
+    $('.modal-title').html('');
     $('#indexConfigModal').modal('show');
 }
 
