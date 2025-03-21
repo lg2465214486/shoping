@@ -2,85 +2,138 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head-fragment(title,path)">
-    <meta charset="UTF-8">
-    <title>新蜂商城 NewBee商城 newbee-mall</title>
-    <link rel="stylesheet" th:href="@{/mall/css/swiper-bundle.min.css}">
-    <link rel="stylesheet" th:href="@{/mall/css/iconfont.css}">
-    <link rel="stylesheet" th:href="@{/mall/css/common.css}">
-    <link rel="stylesheet" th:href="@{/mall/styles/header.css}">
-    <link rel="stylesheet" th:href="@{'/mall/styles/'+${path}+'.css'}">
-    <link rel="stylesheet" th:href="@{/admin/plugins/sweetalert2/sweetalert2.min.css}"/>
-    <meta name="keywords" content="新蜂商城,newbee-mall,新蜂,商城,开源商城,newbee,企业级商城,大型商城项目,Java商城,springboot商城,SpringBoot商城项目,Spring Boot 大型线上商城项目实战教程" />
-    <meta name="description" content="newbee-mall 项目（新蜂商城）是一套电商系统，包括 newbee-mall 商城系统及 newbee-mall-admin 商城后台管理系统，基于 Spring Boot 2.X 及相关技术栈开发。前台商城系统包含首页门户、商品分类、新品上线、首页轮播、商品推荐、商品搜索、商品展示、购物车、订单结算、订单流程、个人订单管理、会员中心、帮助中心等模块。后台管理系统包含数据面板、轮播图管理、商品管理、订单管理、会员管理、分类管理、设置等模块。Spring Boot 大型线上商城项目实战教程"/>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="${title}">shopping</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+
+    <!-- CSS
+	============================================ -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- Icon Font CSS -->
+    <link rel="stylesheet" href="assets/css/icons.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/css/plugins.css">
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Modernizer JS -->
+    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <meta name="keywords"  th:content="${title}" />
+    <meta name="description" th:content="${title}"/>
+
+
 </head>
-<nav id="nav" th:fragment="nav-fragment">
-    <div class="banner_x center">
-        <a th:href="@{/index}" class="logo"><h1>新蜂商城</h1></a>
-        <div class="fr">
-            <div class="search">
-                <input class="text" type="text" id="keyword" autocomplete="off">
-                <div class="search_hot">
-                </div>
-            </div>
-            <div class="button iconfont icon-search" onclick="search()"></div>
-        </div>
-    </div>
-</nav>
-<header id="header" th:fragment="header-fragment">
-    <div class="center">
-        <ul class="fl">
-            <li><a th:href="@{/index}">新蜂商城</a></li>
-            <li><a th:href="@{/admin}">后台管理系统</a></li>
-            <li><a href="https://edu.csdn.net/course/detail/26258">课程视频</a></li>
-            <li><a href="https://juejin.cn/book/6844733814074245133?suid=3808363978174302&source=pc">课程文档</a></li>
-            <li><a href="https://gitee.com/newbee-ltd/newbee-donate">捐赠</a></li>
-            <li><a href="https://github.com/newbee-ltd/newbee-mall/issues">问题反馈</a></li>
-            <li><a href="https://github.com/newbee-ltd/newbee-mall">GitHub 地址</a></li>
-            <li><a href="https://gitee.com/newbee-ltd/newbee-mall">码云Gitee 地址</a></li>
-        </ul>
-        <div class="fr">
-            <th:block th:unless="${session.newBeeMallUser==null}">
-                <div class="user">
-                    <ul class="selector">
-                        <li>
-                            <a th:href="@{/personal}">
-                                个人中心
-                            </a>
-                        </li>
-                        <li>
-                            <a th:href="@{/orders}">
-                                我的订单
-                            </a>
-                        </li>
-                        <li>
-                            <a th:href="@{/logout}">
-                                退出登录
-                            </a>
-                        </li>
-                    </ul>
-                    <a href="##" class="username">
-                        <th:block th:text="${session.newBeeMallUser.nickName}"></th:block>
-                        <i class="iconfont icon-down"></i>
+<header class="header-area header-padding-1 sticky-bar header-res-padding clearfix" th:fragment="header-fragment">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-2 col-lg-2 col-md-6 col-4">
+                <div class="logo">
+                    <a href="index.html">
+                        <h3 style="font-weight: 600">Shopping</h3>
+                        <!--                        <img alt="" src="assets/img/logo/logo.png">-->
                     </a>
                 </div>
-                <div class="shopcart">
-                    <a th:href="@{/shop-cart}" style="color: white;"><i class="iconfont icon-cart"></i>
-                        购物车(
-                        <th:block th:text="${session.newBeeMallUser.shopCartItemCount}"></th:block>
-                        )</a>
+            </div>
+            <div class="col-xl-8 col-lg-8 d-none d-lg-block">
+                <div class="main-menu">
+                    <nav>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="shop.html">Shop</a></li>
+                            <li><a href="about.html">Order</a></li>
+                        </ul>
+                    </nav>
                 </div>
-            </th:block>
-            <th:block th:if="${session.newBeeMallUser==null}">
-                <ul class="login">
-                    <li><a th:href="@{/login}">登录</a></li>
-                    <li><a th:href="@{/register}">注册</a></li>
-                </ul>
-                <div class="shopcart">
-                    <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>
-                        购物车(0)</a>
+            </div>
+            <div class="col-xl-2 col-lg-2 col-md-6 col-8">
+                <div class="header-right-wrap">
+                    <div class="same-style header-search">
+                        <a class="search-active" href="#"><i class="pe-7s-search"></i></a>
+                        <div class="search-content">
+                            <form action="#">
+                                <input type="text" placeholder="Search"/>
+                                <button class="button-search"><i class="pe-7s-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="same-style account-satting">
+                        <a class="account-satting-active" href="#"><i class="pe-7s-user-female"></i></a>
+                        <div class="account-dropdown">
+                            <ul>
+                                <li><a href="login-register.html" th:if="${session.newBeeMallUser==null}">Login</a></li>
+                                <li><a href="login-register.html" th:if="${session.newBeeMallUser==null}">Register</a></li>
+                                <li><a href="wishlist.html">Wishlist </a></li>
+                                <li><a href="my-account.html">my account</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="same-style header-wishlist">
+                        <a href="wishlist.html"><i class="pe-7s-like"></i></a>
+                    </div>
+                    <div class="same-style cart-wrap">
+                        <button class="icon-cart">
+                            <i class="pe-7s-shopbag"></i>
+                            <span class="count-style" th:if="${session.newBeeMallUser!=null}" th:text="${session.newBeeMallUser.shopCartItemCount}">0</span>
+                        </button>
+                        <div class="shopping-cart-content">
+                            <ul>
+                                <li class="single-shopping-cart">
+                                    <div class="shopping-cart-img">
+                                        <a href="#"><img alt="" src="assets/img/cart/cart-1.png"></a>
+                                    </div>
+                                    <div class="shopping-cart-title">
+                                        <h4><a href="#">T- Shart & Jeans </a></h4>
+                                        <h6>Qty: 02</h6>
+                                        <span>$260.00</span>
+                                    </div>
+                                    <div class="shopping-cart-delete">
+                                        <a href="#"><i class="fa fa-times-circle"></i></a>
+                                    </div>
+                                </li>
+                                <li class="single-shopping-cart">
+                                    <div class="shopping-cart-img">
+                                        <a href="#"><img alt="" src="assets/img/cart/cart-2.png"></a>
+                                    </div>
+                                    <div class="shopping-cart-title">
+                                        <h4><a href="#">T- Shart & Jeans </a></h4>
+                                        <h6>Qty: 02</h6>
+                                        <span>$260.00</span>
+                                    </div>
+                                    <div class="shopping-cart-delete">
+                                        <a href="#"><i class="fa fa-times-circle"></i></a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="shopping-cart-total">
+                                <h4>Shipping : <span>$20.00</span></h4>
+                                <h4>Total : <span class="shop-total">$260.00</span></h4>
+                            </div>
+                            <div class="shopping-cart-btn btn-hover text-center">
+                                <a class="default-btn" href="cart-page.html">view cart</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </th:block>
+            </div>
+        </div>
+        <div class="mobile-menu-area">
+            <div class="mobile-menu">
+                <nav id="mobile-menu-active">
+                    <ul class="menu-overflow">
+                        <li><a href="shop.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="shop.html">Order</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </header>
+
 </html>
