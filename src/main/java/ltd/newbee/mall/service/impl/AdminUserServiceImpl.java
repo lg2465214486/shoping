@@ -8,8 +8,8 @@
  */
 package ltd.newbee.mall.service.impl;
 
-import ltd.newbee.mall.entity.AdminUser;
 import ltd.newbee.mall.dao.AdminUserMapper;
+import ltd.newbee.mall.entity.AdminUser;
 import ltd.newbee.mall.service.AdminUserService;
 import ltd.newbee.mall.util.MD5Util;
 import org.springframework.stereotype.Service;
@@ -33,9 +33,6 @@ public class AdminUserServiceImpl implements AdminUserService {
         return adminUserMapper.selectByPrimaryKey(loginUserId);
     }
 
-    public static void main(String[] args) {
-        System.out.println( MD5Util.MD5Encode("123456", "UTF-8"));
-    }
     @Override
     public Boolean updatePassword(Integer loginUserId, String originalPassword, String newPassword) {
         AdminUser adminUser = adminUserMapper.selectByPrimaryKey(loginUserId);
@@ -70,5 +67,10 @@ public class AdminUserServiceImpl implements AdminUserService {
             }
         }
         return false;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println( MD5Util.MD5Encode("123456", "UTF-8"));
     }
 }

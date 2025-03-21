@@ -5,7 +5,7 @@ $(function () {
         colModel: [
             {label: 'id', name: 'carouselId', index: 'carouselId', width: 50, key: true, hidden: true},
             {label: '轮播图', name: 'carouselUrl', index: 'carouselUrl', width: 180, formatter: coverImageFormatter},
-            {label: '跳转链接', name: 'redirectUrl', index: 'redirectUrl', width: 120},
+            // {label: '跳转链接', name: 'redirectUrl', index: 'redirectUrl', width: 120},
             {label: '排序值', name: 'carouselRank', index: 'carouselRank', width: 120},
             {label: '添加时间', name: 'createTime', index: 'createTime', width: 120}
         ],

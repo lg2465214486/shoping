@@ -26,7 +26,7 @@
                         <form id="goodsForm" onsubmit="return false;">
                             <div class="form-group" style="display:flex;">
                                 <label class="control-label">请选择分类:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                <select class="form-control col-sm-3" id="levelOne"
+                                <select class="form-control col-sm-3" id="levelThree"
                                         data-placeholder="请选择分类...">
                                     <th:block th:unless="${null == firstLevelCategories}">
                                         <th:block th:each="c : ${firstLevelCategories}">
@@ -37,30 +37,30 @@
                                         </th:block>
                                     </th:block>
                                 </select>&nbsp;
-                                <select class="form-control col-sm-3"
-                                        id="levelTwo"
-                                        data-placeholder="请选择分类...">
-                                    <th:block th:unless="${null == secondLevelCategories}">
-                                        <th:block th:each="c : ${secondLevelCategories}">
-                                            <option th:value="${c.categoryId}" th:text="${c.categoryName}"
-                                                    th:selected="${null !=secondLevelCategoryId and secondLevelCategoryId==c.categoryId} ?true:false">
-                                                >
-                                            </option>
-                                        </th:block>
-                                    </th:block>
-                                </select>&nbsp;
-                                <select class="form-control col-sm-3"
-                                        id="levelThree"
-                                        data-placeholder="请选择分类...">
-                                    <th:block th:unless="${null == thirdLevelCategories}">
-                                        <th:block th:each="c : ${thirdLevelCategories}">
-                                            <option th:value="${c.categoryId}" th:text="${c.categoryName}"
-                                                    th:selected="${null !=thirdLevelCategoryId and thirdLevelCategoryId==c.categoryId} ?true:false">
-                                                >
-                                            </option>
-                                        </th:block>
-                                    </th:block>
-                                </select>
+<!--                                <select class="form-control col-sm-3"-->
+<!--                                        id="levelTwo"-->
+<!--                                        data-placeholder="请选择分类...">-->
+<!--                                    <th:block th:unless="${null == secondLevelCategories}">-->
+<!--                                        <th:block th:each="c : ${secondLevelCategories}">-->
+<!--                                            <option th:value="${c.categoryId}" th:text="${c.categoryName}"-->
+<!--                                                    th:selected="${null !=secondLevelCategoryId and secondLevelCategoryId==c.categoryId} ?true:false">-->
+<!--                                                >-->
+<!--                                            </option>-->
+<!--                                        </th:block>-->
+<!--                                    </th:block>-->
+<!--                                </select>&nbsp;-->
+<!--                                <select class="form-control col-sm-3"-->
+<!--                                        id="levelThree"-->
+<!--                                        data-placeholder="请选择分类...">-->
+<!--                                    <th:block th:unless="${null == thirdLevelCategories}">-->
+<!--                                        <th:block th:each="c : ${thirdLevelCategories}">-->
+<!--                                            <option th:value="${c.categoryId}" th:text="${c.categoryName}"-->
+<!--                                                    th:selected="${null !=thirdLevelCategoryId and thirdLevelCategoryId==c.categoryId} ?true:false">-->
+<!--                                                >-->
+<!--                                            </option>-->
+<!--                                        </th:block>-->
+<!--                                    </th:block>-->
+<!--                                </select>-->
                             </div>
                             <div class="form-group" style="display:flex;">
                                 <input type="hidden" id="goodsId" name="goodsId"
@@ -78,20 +78,20 @@
                             <div class="form-group" style="display:flex;">
                                 <input type="number" class="form-control col-sm-6" id="originalPrice"
                                        name="originalPrice"
-                                       placeholder="*请输入商品价格"
-                                       th:value="${goods!=null and goods.originalPrice!=null }?${goods.originalPrice}: 1"
+                                       placeholder="*请输入商品原价"
+                                       th:value="${goods!=null and goods.originalPrice!=null }?${goods.originalPrice}: ''"
                                        required="true">
                                 &nbsp;&nbsp;
                                 <input type="number" class="form-control col-sm-6" id="sellingPrice"
                                        name="sellingPrice"
                                        placeholder="*请输入商品售卖价"
-                                       th:value="${goods!=null and goods.sellingPrice!=null }?${goods.sellingPrice}: 1"
+                                       th:value="${goods!=null and goods.sellingPrice!=null }?${goods.sellingPrice}: ''"
                                        required="true">
                             </div>
                             <div class="form-group" style="display:flex;">
                                 <input type="number" class="form-control col-sm-6" id="stockNum" name="stockNum"
                                        placeholder="*请输入商品库存数"
-                                       th:value="${goods!=null and goods.stockNum!=null }?${goods.stockNum}: 0"
+                                       th:value="${goods!=null and goods.stockNum!=null }?${goods.stockNum}: ''"
                                        required="true">
                                 &nbsp;&nbsp;
                                 <input type="text" class="form-control col-sm-6" id="tag" name="tag"

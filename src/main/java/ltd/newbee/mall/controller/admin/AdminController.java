@@ -8,11 +8,9 @@
  */
 package ltd.newbee.mall.controller.admin;
 
-import cn.hutool.captcha.ShearCaptcha;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.entity.AdminUser;
 import ltd.newbee.mall.service.AdminUserService;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -56,19 +54,19 @@ public class AdminController {
                         @RequestParam("password") String password,
                         @RequestParam("verifyCode") String verifyCode,
                         HttpSession session) {
-        if (!StringUtils.hasText(verifyCode)) {
-            session.setAttribute("errorMsg", "验证码不能为空");
-            return "admin/login";
-        }
+//        if (!StringUtils.hasText(verifyCode)) {
+//            session.setAttribute("errorMsg", "验证码不能为空");
+//            return "admin/login";
+//        }
         if (!StringUtils.hasText(userName) || !StringUtils.hasText(password)) {
             session.setAttribute("errorMsg", "用户名或密码不能为空");
             return "admin/login";
         }
-        ShearCaptcha shearCaptcha = (ShearCaptcha) session.getAttribute("verifyCode");
-        if (shearCaptcha == null || !shearCaptcha.verify(verifyCode)) {
-            session.setAttribute("errorMsg", "验证码错误");
-            return "admin/login";
-        }
+//        ShearCaptcha shearCaptcha = (ShearCaptcha) session.getAttribute("verifyCode");
+//        if (shearCaptcha == null || !shearCaptcha.verify(verifyCode)) {
+//            session.setAttribute("errorMsg", "验证码错误");
+//            return "admin/login";
+//        }
         AdminUser adminUser = adminUserService.login(userName, password);
         if (adminUser != null) {
             session.setAttribute("loginUser", adminUser.getNickName());
