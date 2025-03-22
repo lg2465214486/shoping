@@ -25,9 +25,9 @@ public class NewBeeMallGoods {
 
     private String goodsCarousel;
 
-    private Integer originalPrice;
+    private Double originalPrice;
 
-    private Integer sellingPrice;
+    private Double sellingPrice;
 
     private Integer stockNum;
 
@@ -95,19 +95,19 @@ public class NewBeeMallGoods {
         this.goodsCarousel = goodsCarousel == null ? null : goodsCarousel.trim();
     }
 
-    public Integer getOriginalPrice() {
+    public Double getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(Integer originalPrice) {
+    public void setOriginalPrice(Double originalPrice) {
         this.originalPrice = originalPrice;
     }
 
-    public Integer getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Integer sellingPrice) {
+    public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 

@@ -19,7 +19,7 @@ public class NewBeeMallOrder {
 
     private Long userId;
 
-    private Integer totalPrice;
+    private Double totalPrice;
 
     private Byte payStatus;
 
@@ -64,11 +64,11 @@ public class NewBeeMallOrder {
         this.userId = userId;
     }
 
-    public Integer getTotalPrice() {
+    public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 

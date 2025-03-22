@@ -8,9 +8,14 @@
  */
 package ltd.newbee.mall.controller.admin;
 
+import cn.hutool.core.util.ObjectUtil;
 import ltd.newbee.mall.common.ServiceResultEnum;
+import ltd.newbee.mall.controller.vo.PayConfigVo;
+import ltd.newbee.mall.dao.IndexConfigMapper;
 import ltd.newbee.mall.entity.AdminUser;
+import ltd.newbee.mall.entity.IndexConfig;
 import ltd.newbee.mall.service.AdminUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * @author 13
@@ -31,6 +37,8 @@ public class AdminController {
 
     @Resource
     private AdminUserService adminUserService;
+    @Autowired
+    private IndexConfigMapper indexConfigMapper;
 
     @GetMapping({"/login"})
     public String login() {
@@ -46,7 +54,58 @@ public class AdminController {
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
         request.setAttribute("path", "index");
+        //获取usdt地址和二维码
+        IndexConfig usdtConfig = indexConfigMapper.selectByTypeAndGoodsId(8, 1L);
+        request.setAttribute("usdtConfig", usdtConfig);
+        IndexConfig bankConfig = indexConfigMapper.selectByTypeAndGoodsId(8, 2L);
+        request.setAttribute("bankConfig", bankConfig);
         return "admin/index";
+    }
+
+    @PostMapping("/savePayConfig")
+    @ResponseBody
+    public String savePayConfig(@RequestBody PayConfigVo payConfigVo, HttpServletRequest request){
+        IndexConfig usdtConfig = indexConfigMapper.selectByTypeAndGoodsId(8, 1L);
+        if(ObjectUtil.isEmpty(usdtConfig)){
+            usdtConfig = new IndexConfig();
+            usdtConfig.setConfigId(100000000L);
+            usdtConfig.setGoodsId(1L);
+            usdtConfig.setConfigType(new Byte("8"));
+            usdtConfig.setConfigName(payConfigVo.getUsdtAddress());
+            usdtConfig.setRedirectUrl(payConfigVo.getUsdtImg());
+            usdtConfig.setConfigRank(0);
+            usdtConfig.setIsDeleted(new Byte("0"));
+            usdtConfig.setCreateTime(new Date());
+            usdtConfig.setUpdateTime(new Date());
+            usdtConfig.setCreateUser(0);
+            indexConfigMapper.insert(usdtConfig);
+        }else {
+            usdtConfig.setConfigName(payConfigVo.getUsdtAddress());
+            usdtConfig.setRedirectUrl(payConfigVo.getUsdtImg());
+            usdtConfig.setUpdateTime(new Date());
+            indexConfigMapper.updateByPrimaryKey(usdtConfig);
+        }
+        IndexConfig bankConfig = indexConfigMapper.selectByTypeAndGoodsId(8, 2L);
+        if(ObjectUtil.isEmpty(bankConfig)){
+            bankConfig = new IndexConfig();
+            bankConfig.setConfigId(200000000L);
+            bankConfig.setGoodsId(2L);
+            bankConfig.setConfigType(new Byte("8"));
+            bankConfig.setConfigName(payConfigVo.getBankCard());
+            bankConfig.setRedirectUrl(payConfigVo.getBankImg());
+            bankConfig.setConfigRank(0);
+            bankConfig.setIsDeleted(new Byte("0"));
+            bankConfig.setCreateTime(new Date());
+            bankConfig.setUpdateTime(new Date());
+            bankConfig.setCreateUser(0);
+            indexConfigMapper.insert(bankConfig);
+        }else {
+            bankConfig.setConfigName(payConfigVo.getBankCard());
+            bankConfig.setRedirectUrl(payConfigVo.getBankImg());
+            bankConfig.setUpdateTime(new Date());
+            indexConfigMapper.updateByPrimaryKey(bankConfig);
+        }
+        return "保存成功！";
     }
 
     @PostMapping(value = "/login")

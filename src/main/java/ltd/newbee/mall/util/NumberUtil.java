@@ -1,5 +1,7 @@
 package ltd.newbee.mall.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,5 +57,14 @@ public class NumberUtil {
         int num = genRandomNum(4);
         buffer.append(num);
         return buffer.toString();
+    }
+
+    /**
+     * double保留2位小数目
+     */
+    public static Double doubleHALF_UP(Double number) {
+        BigDecimal bd = new BigDecimal(number);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

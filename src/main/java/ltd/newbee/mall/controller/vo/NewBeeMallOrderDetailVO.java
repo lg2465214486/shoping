@@ -19,7 +19,7 @@ public class NewBeeMallOrderDetailVO implements Serializable {
 
     private String orderNo;
 
-    private Integer totalPrice;
+    private Double totalPrice;
 
     private Byte payStatus;
 
@@ -49,11 +49,11 @@ public class NewBeeMallOrderDetailVO implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public Integer getTotalPrice() {
+    public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
