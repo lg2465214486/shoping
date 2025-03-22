@@ -2,6 +2,7 @@ $(function () {
     $("#jqGrid").jqGrid({
         url: '/admin/orders/list?payStatus=1',
         datatype: "json",
+        postData: { orderNo: ""},
         colModel: [
             {label: 'id', name: 'orderId', index: 'orderId', width: 50, key: true, hidden: true},
             {label: '订单号', name: 'orderNo', index: 'orderNo', width: 120},
@@ -109,9 +110,9 @@ $(function () {
  * jqGrid重新加载
  */
 function reload() {
-    initFlatPickr();
     var page = $("#jqGrid").jqGrid('getGridParam', 'page');
     $("#jqGrid").jqGrid('setGridParam', {
+        postData: {orderNo: $("#searchOrderId").val()},
         page: page
     }).trigger("reloadGrid");
 }

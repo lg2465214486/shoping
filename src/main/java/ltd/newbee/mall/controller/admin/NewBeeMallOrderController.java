@@ -10,14 +10,18 @@ package ltd.newbee.mall.controller.admin;
 
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallOrderItemVO;
+import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
+import ltd.newbee.mall.dao.NewBeeMallOrderItemMapper;
 import ltd.newbee.mall.dao.NewBeeMallOrderMapper;
 import ltd.newbee.mall.entity.NewBeeMallOrder;
+import ltd.newbee.mall.entity.NewBeeMallOrderItem;
 import ltd.newbee.mall.service.NewBeeMallOrderService;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -43,6 +47,10 @@ public class NewBeeMallOrderController {
     private NewBeeMallOrderService newBeeMallOrderService;
     @Autowired
     private NewBeeMallOrderMapper newBeeMallOrderMapper;
+    @Autowired
+    private NewBeeMallGoodsMapper newBeeMallGoodsMapper;
+    @Autowired
+    private NewBeeMallOrderItemMapper newBeeMallOrderItemMapper;
 
     @GetMapping("/orders")
     public String ordersPage(HttpServletRequest request) {
@@ -58,12 +66,18 @@ public class NewBeeMallOrderController {
 
     @PostMapping("/orders_manage_yesOrNo")
     @ResponseBody
+    @Transactional
     public String ordersManageYesOrNo(@RequestBody List<Long> ids, @RequestParam Integer yesOrNo, HttpServletRequest request) {
         for (Long id : ids) {
             NewBeeMallOrder newBeeMallOrder = newBeeMallOrderMapper.selectByPrimaryKey(id);
             if (yesOrNo == 1){
                 newBeeMallOrder.setPayStatus(new Byte("1"));
                 newBeeMallOrder.setOrderStatus(new Byte("1"));
+                List<NewBeeMallOrderItem> newBeeMallOrderItems = newBeeMallOrderItemMapper.selectByOrderId(newBeeMallOrder.getOrderId());
+                //减库存
+                for (NewBeeMallOrderItem orderItem : newBeeMallOrderItems) {
+                    newBeeMallGoodsMapper.reduceStockNum(orderItem.getGoodsId(), orderItem.getGoodsCount());
+                }
             }else {
                 newBeeMallOrder.setPayStatus(new Byte("-1"));
                 newBeeMallOrder.setOrderStatus(new Byte("-1"));
