@@ -26,9 +26,9 @@ public class NewBeeMallGoodsDetailVO implements Serializable {
 
     private String[] goodsCarouselList;
 
-    private Integer sellingPrice;
+    private Double sellingPrice;
 
-    private Integer originalPrice;
+    private Double originalPrice;
 
     private String goodsDetailContent;
 
@@ -64,19 +64,19 @@ public class NewBeeMallGoodsDetailVO implements Serializable {
         this.goodsCoverImg = goodsCoverImg;
     }
 
-    public Integer getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Integer sellingPrice) {
+    public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
-    public Integer getOriginalPrice() {
+    public Double getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(Integer originalPrice) {
+    public void setOriginalPrice(Double originalPrice) {
         this.originalPrice = originalPrice;
     }
 

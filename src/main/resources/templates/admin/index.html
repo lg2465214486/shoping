@@ -19,13 +19,69 @@
         <div class="content">
             <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">首页</h3>
+                    <h3 class="card-title">系统配置</h3>
                 </div> <!-- /.card-body -->
                 <div class="card-body">
                     <div class="panel panel-default">
                         <div style="padding: 10px 0 20px 10px;">
-
+                            <!-- usdt -->
+                            USDT：<input type="text" class="form-control col-sm-6" id="usdtAddress" name="usdtAddress"
+                                   placeholder="*请输入USDT地址(必填)"
+                                   th:value="${usdtConfig!=null and usdtConfig.configName!=null }?${usdtConfig.configName}: ''"
+                                   required="true">
+                            <br>
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <th:block th:if="${null == usdtConfig}">
+                                        <img id="usdtImg" src="/admin/dist/img/img-upload.png"
+                                             style="height: 64px;width: 64px;">
+                                    </th:block>
+                                    <th:block th:unless="${null == usdtConfig}">
+                                        <img id="usdtImg" th:src="${usdtConfig.redirectUrl}"
+                                             style="width:160px ;height: 160px;display:block;">
+                                    </th:block>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <button class="btn btn-info" style="margin-bottom: 5px;"
+                                            id="uploadUsdtImg">
+                                        <i class="fa fa-picture-o"></i>&nbsp;上传USDT收款码
+                                    </button>
+                                </div>
+                            </div>
+                            &nbsp;
+                            <!-- 银行卡 -->
+                            银行卡：<input type="text" class="form-control col-sm-6" id="bankCard" name="bankCard"
+                                   placeholder="*请输入银行卡地址(必填)"
+                                   th:value="${bankConfig!=null and bankConfig.configName!=null }?${bankConfig.configName}: ''"
+                                   required="true">
+                            <br>
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <th:block th:if="${null == bankConfig}">
+                                        <img id="bankImg" src="/admin/dist/img/img-upload.png"
+                                             style="height: 64px;width: 64px;">
+                                    </th:block>
+                                    <th:block th:unless="${null == bankConfig}">
+                                        <img id="bankImg" th:src="${bankConfig.redirectUrl}"
+                                             style="width:160px ;height: 160px;display:block;">
+                                    </th:block>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <button class="btn btn-info" style="margin-bottom: 5px;"
+                                            id="uploadBankImg">
+                                        <i class="fa fa-picture-o"></i>&nbsp;上传银行卡收款码
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+                        <button class="btn btn-info float-right" style="margin-left: 5px;"
+                                id="saveBtn">保存</button>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -39,5 +95,126 @@
 <script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <!-- AdminLTE App -->
 <script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- jqgrid -->
+<script th:src="@{/admin/plugins/jqgrid-5.7.0/jquery.jqGrid.min.js}"></script>
+<script th:src="@{/admin/plugins/jqgrid-5.7.0/grid.locale-cn.js}"></script>
+<!-- ajaxupload -->
+<script th:src="@{/admin/plugins/ajaxupload/ajaxupload.js}"></script>
+<!-- sweetalert -->
+<script th:src="@{/admin/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script th:src="@{/admin/dist/js/newbee_mall_index_config.js}"></script>
+
 </body>
+<script>
+    $(function () {
+        new AjaxUpload('#uploadUsdtImg', {
+            action: '/admin/upload/file',
+            name: 'file',
+            autoSubmit: true,
+            responseType: "json",
+            onSubmit: function (file, extension) {
+                if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))) {
+                    Swal.fire({
+                        text: "只支持jpg、png、gif格式的文件！",
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                    return false;
+                }
+            },
+            onComplete: function (file, r) {
+                if (r != null && r.resultCode == 200) {
+                    $("#usdtImg").attr("src", r.data);
+                    $("#usdtImg").attr("style", "width: 128px;height: 128px;display:block;");
+                    return false;
+                } else if (r != null && r.resultCode != 200) {
+                    Swal.fire({
+                        text: r.message,
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                    return false;
+                }
+                else {
+                    Swal.fire({
+                        text: "error",
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                }
+            }
+        });
+
+        new AjaxUpload('#uploadBankImg', {
+            action: '/admin/upload/file',
+            name: 'file',
+            autoSubmit: true,
+            responseType: "json",
+            onSubmit: function (file, extension) {
+                if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))) {
+                    Swal.fire({
+                        text: "只支持jpg、png、gif格式的文件！",
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                    return false;
+                }
+            },
+            onComplete: function (file, r) {
+                if (r != null && r.resultCode == 200) {
+                    $("#bankImg").attr("src", r.data);
+                    $("#bankImg").attr("style", "width: 128px;height: 128px;display:block;");
+                    return false;
+                } else if (r != null && r.resultCode != 200) {
+                    Swal.fire({
+                        text: r.message,
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                    return false;
+                }
+                else {
+                    Swal.fire({
+                        text: "error",
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                }
+            }
+        });
+    })
+
+    $("#saveBtn").click(function (){
+        var usdtAddress = $("#usdtAddress").val();
+        var bankCard = $("#bankCard").val();
+        var usdtImg = $('#usdtImg')[0].src;
+        var bankImg = $('#bankImg')[0].src;
+        var data = {
+            "usdtAddress": usdtAddress,
+            "bankCard": bankCard,
+            "usdtImg": usdtImg,
+            "bankImg": bankImg
+        };
+        $.ajax({
+            type: 'POST',//方法类型
+            url: "/admin/savePayConfig",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result == "保存成功！") {
+                    Swal.fire({
+                        text: "保存成功",
+                        icon: "success",iconColor:"#1d953f",
+                    });
+                } else {
+                    Swal.fire({
+                        text: result.message,
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    text: "操作失败",
+                    icon: "error",iconColor:"#f05b72",
+                });
+            }
+        });
+    })
+</script>
 </html>

@@ -218,7 +218,7 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
                 }
                 //生成订单号
                 String orderNo = NumberUtil.genOrderNo();
-                int priceTotal = 0;
+                double priceTotal = 0;
                 //保存订单
                 NewBeeMallOrder newBeeMallOrder = new NewBeeMallOrder();
                 newBeeMallOrder.setOrderNo(orderNo);
@@ -226,7 +226,7 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
                 newBeeMallOrder.setUserAddress(user.getAddress());
                 //总价
                 for (NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO : myShoppingCartItems) {
-                    priceTotal += newBeeMallShoppingCartItemVO.getGoodsCount() * newBeeMallShoppingCartItemVO.getSellingPrice();
+                    priceTotal += NumberUtil.doubleHALF_UP(newBeeMallShoppingCartItemVO.getGoodsCount() * newBeeMallShoppingCartItemVO.getSellingPrice());
                 }
                 if (priceTotal < 1) {
                     NewBeeMallException.fail(ServiceResultEnum.ORDER_PRICE_ERROR.getResult());

@@ -23,7 +23,7 @@ public class NewBeeMallOrderItemVO implements Serializable {
 
     private String goodsCoverImg;
 
-    private Integer sellingPrice;
+    private Double sellingPrice;
 
     public Long getGoodsId() {
         return goodsId;
@@ -49,11 +49,11 @@ public class NewBeeMallOrderItemVO implements Serializable {
         this.goodsCoverImg = goodsCoverImg;
     }
 
-    public Integer getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Integer sellingPrice) {
+    public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 

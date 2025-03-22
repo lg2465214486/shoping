@@ -21,7 +21,7 @@ public class NewBeeMallOrderItem {
 
     private String goodsCoverImg;
 
-    private Integer sellingPrice;
+    private Double sellingPrice;
 
     private Integer goodsCount;
 
@@ -67,11 +67,11 @@ public class NewBeeMallOrderItem {
         this.goodsCoverImg = goodsCoverImg == null ? null : goodsCoverImg.trim();
     }
 
-    public Integer getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Integer sellingPrice) {
+    public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
