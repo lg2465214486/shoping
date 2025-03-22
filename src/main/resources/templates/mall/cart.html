@@ -12,7 +12,7 @@
                 <li>
                     <a href="index.html">Home</a>
                 </li>
-                <li class="active">Cart Page </li>
+                <li class="active">Cart Page</li>
             </ul>
         </div>
     </div>
@@ -38,18 +38,22 @@
                             <tbody>
                             <tr th:each="item : ${myShoppingCartItems}">
                                 <td class="product-thumbnail">
-                                    <a th:href="@{'/goods/detail/'+${item.goodsId}}"><img th:src="@{${item.goodsCoverImg}}" th:alt="${item.goodsName}"></a>
+                                    <a th:href="@{'/goods/detail/'+${item.goodsId}}"><img
+                                            th:src="@{${item.goodsCoverImg}}" th:alt="${item.goodsName}"></a>
                                 </td>
-                                <td class="product-name" ><a th:href="@{'/goods/detail/'+${item.goodsId}}" th:text="${item.goodsName}">Product Name</a></td>
-                                <td class="product-price-cart"><span class="amount" th:text="${item.sellingPrice+'$'}">$260.00</span></td>
+                                <td class="product-name"><a th:href="@{'/goods/detail/'+${item.goodsId}}"
+                                                            th:text="${item.goodsName}">Product Name</a></td>
+                                <td class="product-price-cart"><span class="amount" th:text="${item.sellingPrice+'$'}">$260.00</span>
+                                </td>
                                 <td class="product-quantity">
                                     <input th:id="${'goodsCount'+item.cartItemId}"
                                            th:onblur="'updateItem('+${item.cartItemId}+')'"
                                            th:value="${item.goodsCount}"
                                            th:oninput="'updateItem('+${item.cartItemId}+')'"
-                                             type="number" >
+                                           type="number">
                                 </td>
-                                <td class="product-subtotal" th:text="${item.goodsCount*item.sellingPrice+'$'}">110.00</td>
+                                <td class="product-subtotal" th:text="${item.goodsCount*item.sellingPrice+'$'}">110.00
+                                </td>
                                 <td class="product-remove" th:onclick="'deleteItem('+${item.cartItemId}+')'">
                                     <a href="#"><i class="fa fa-times"></i></a>
                                 </td>
@@ -101,7 +105,7 @@
                                     </div>
                                     <div class="tax-select">
                                         <label>
-                                             detailed address
+                                            detailed address
                                         </label>
                                         <input type="text" id="address">
                                     </div>
@@ -122,7 +126,8 @@
                                     <li><input type="radio" name="payType" value="2"> Bank Card</input></li>
                                 </ul>
                             </div>
-                            <h4 class="grand-totall-title">Grand Total  <span th:text="${priceTotal+'$'}">$260.00</span></h4>
+                            <h4 class="grand-totall-title">Grand Total <span th:text="${priceTotal+'$'}">$260.00</span>
+                            </h4>
                             <a id="saveButton">Proceed to Checkout</a>
                         </div>
                     </div>
@@ -131,6 +136,10 @@
         </div>
     </div>
 </div>
+<input type="hidden" th:value="${usdtConfig.redirectUrl}" id="usdtConfigImg">
+<input type="hidden" th:value="${usdtConfig.configName}" id="usdtConfigName">
+<input type="hidden" th:value="${bankConfig.redirectUrl}" id="bankConfigImg">
+<input type="hidden" th:value="${bankConfig.configName}" id="bankConfigName">
 
 </body>
 
@@ -169,59 +178,81 @@
         var phoneNumber = $("#phoneNumber").val();
         var address = $("#address").val();
 
-        if (contacts == '' || contacts.length > 255){
+        if (contacts == '' || contacts.length > 255) {
             alert("contacts value 1-255 size");
             return
         }
 
-        if (phoneNumber == '' || phoneNumber.length > 255){
-            alert("phoneNumber 1-255 size");
+        if (phoneNumber == '' || phoneNumber.length > 255) {
+            alert("phoneNumber value 1-255 size");
             return
         }
 
-        if (address == '' || address.length > 255){
-            alert("address 1-255 size");
+        if (address == '' || address.length > 255) {
+            alert("address value 1-255 size");
             return
         }
 
-        var data = {
-            "takeType": deliveryMethod,
-            "address": "联系人："+contacts+"\n手机号："+phoneNumber+"\n详细地址："+address,
-            "payType": payType
-        };
-        $.ajax({
-            type: 'POST',//方法类型
-            url: '/saveOrder',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.resultCode == 200) {
-                    $('#personalInfoModal').modal('hide');
-                    window.location.reload();
-                } else {
-                    $('#personalInfoModal').modal('hide');
-                    Swal.fire({
-                        text: result.message,
-                        icon: "error",iconColor:"#f05b72",
+        var title = "USDT Order Pay";
+        var img = $("#usdtConfigImg").val();
+        var text = $("#usdtConfigName").val();
+
+        if (payType == 2) {
+            title = "Bank Card Order Pay";
+            img = $("#bankConfigImg").val();
+            text = $("#bankConfigName").val();
+        }
+
+        Swal.fire({
+            title: title,
+            text: text,
+            imageUrl: img,
+            showCancelButton: true,
+            confirmButtonText: 'Payment Success',
+            cancelButtonText: 'cancel'
+        }).then((flag) => {
+                if (flag.value) {
+                    var data = {
+                        "takeType": deliveryMethod,
+                        "address": "联系人：" + contacts + "\n手机号：" + phoneNumber + "\n详细地址：" + address,
+                        "payType": payType
+                    };
+                    $.ajax({
+                        type: 'POST',//方法类型
+                        url: '/saveOrder',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function (result) {
+                            if (result.resultCode == 200) {
+                                window.location.reload();
+                            } else {
+                                Swal.fire({
+                                    text: result.message,
+                                    icon: "error", iconColor: "#f05b72",
+                                });
+                            }
+                            ;
+                        },
+                        error: function () {
+                            Swal.fire({
+                                text: 'error',
+                                icon: "error", iconColor: "#f05b72",
+                            });
+                        }
                     });
                 }
-                ;
-            },
-            error: function () {
-                Swal.fire({
-                    text: 'error',
-                    icon: "error",iconColor:"#f05b72",
-                });
             }
-        });
+        );
+
     });
+
     /**
      * 购物车中数量为0时提示
      */
     function tip() {
         Swal.fire({
             text: "购物车中无数据，无法结算",
-            icon: "error",iconColor:"#f05b72",
+            icon: "error", iconColor: "#f05b72",
         });
     }
 
@@ -241,7 +272,7 @@
         if (goodsCount > 999) {
             Swal.fire({
                 text: "one goods max size 999",
-                icon: "error",iconColor:"#f05b72",
+                icon: "error", iconColor: "#f05b72",
             });
             $("#" + domId).val(100);
             return;
@@ -249,7 +280,7 @@
         if (goodsCount < 1) {
             Swal.fire({
                 text: "one goods min size 1",
-                icon: "error",iconColor:"#f05b72",
+                icon: "error", iconColor: "#f05b72",
             });
             $("#" + domId).val(1);
             return;
@@ -269,14 +300,14 @@
                 } else {
                     Swal.fire({
                         text: "操作失败",
-                        icon: "error",iconColor:"#f05b72",
+                        icon: "error", iconColor: "#f05b72",
                     });
                 }
             },
             error: function () {
                 Swal.fire({
                     text: "操作失败",
-                    icon: "error",iconColor:"#f05b72",
+                    icon: "error", iconColor: "#f05b72",
                 });
             }
         });
@@ -290,7 +321,7 @@
         Swal.fire({
             title: "delete",
             text: "is cart goods?",
-            icon: "warning",iconColor:"#dea32c",
+            icon: "warning", iconColor: "#dea32c",
             showCancelButton: true,
             confirmButtonText: 'OK',
             cancelButtonText: 'cancel'
@@ -305,14 +336,14 @@
                             } else {
                                 Swal.fire({
                                     text: "error",
-                                    icon: "error",iconColor:"#f05b72",
+                                    icon: "error", iconColor: "#f05b72",
                                 });
                             }
                         },
                         error: function () {
                             Swal.fire({
                                 text: "error",
-                                icon: "error",iconColor:"#f05b72",
+                                icon: "error", iconColor: "#f05b72",
                             });
                         }
                     });

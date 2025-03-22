@@ -13,10 +13,13 @@ import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
+import ltd.newbee.mall.dao.IndexConfigMapper;
+import ltd.newbee.mall.entity.IndexConfig;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -32,6 +35,8 @@ public class ShoppingCartController {
 
     @Resource
     private NewBeeMallShoppingCartService newBeeMallShoppingCartService;
+    @Autowired
+    private IndexConfigMapper indexConfigMapper;
 
     @GetMapping("/shop-cart")
     public String cartListPage(HttpServletRequest request,
@@ -39,6 +44,7 @@ public class ShoppingCartController {
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
         int itemsTotal = 0;
         int priceTotal = 0;
+
         List<NewBeeMallShoppingCartItemVO> myShoppingCartItems = newBeeMallShoppingCartService.getMyShoppingCartItems(user.getUserId());
         if (!CollectionUtils.isEmpty(myShoppingCartItems)) {
             //购物项总数
@@ -54,6 +60,11 @@ public class ShoppingCartController {
                 NewBeeMallException.fail("购物项价格异常");
             }
         }
+
+        IndexConfig usdtConfig = indexConfigMapper.selectByTypeAndGoodsId(8, 1L);
+        IndexConfig bankConfig = indexConfigMapper.selectByTypeAndGoodsId(8, 2L);
+        request.setAttribute("usdtConfig", usdtConfig);
+        request.setAttribute("bankConfig", bankConfig);
         request.setAttribute("itemsTotal", itemsTotal);
         request.setAttribute("priceTotal", priceTotal);
         request.setAttribute("myShoppingCartItems", myShoppingCartItems);
