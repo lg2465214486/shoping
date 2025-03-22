@@ -1,4 +1,5 @@
 $(function () {
+
     $("#jqGrid").jqGrid({
         url: '/admin/users/list',
         datatype: "json",
@@ -10,6 +11,7 @@ $(function () {
             {label: '是否注销', name: 'isDeleted', index: 'isDeleted', width: 60, formatter: deletedFormatter},
             {label: '注册时间', name: 'createTime', index: 'createTime', width: 120}
         ],
+        postData: { loginName: ""},
         height: 560,
         rowNum: 10,
         rowList: [10, 20, 50],
@@ -64,6 +66,7 @@ $(function () {
 function reload() {
     var page = $("#jqGrid").jqGrid('getGridParam', 'page');
     $("#jqGrid").jqGrid('setGridParam', {
+        postData: {loginName: $("#searchUserId").val()},
         page: page
     }).trigger("reloadGrid");
 }

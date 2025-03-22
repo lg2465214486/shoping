@@ -80,6 +80,9 @@
         <include refid="Base_Column_List"/>
         from tb_newbee_mall_goods_info
         <where>
+            <if test="goodsId!=null and goodsId!=''">
+                and goods_id = #{goodsId}
+            </if>
             <if test="goodsName!=null and goodsName!=''">
                 and goods_name like CONCAT('%','#{goodsName}','%')
             </if>
@@ -138,6 +141,9 @@
     <select id="getTotalNewBeeMallGoodsBySearch" parameterType="Map" resultType="int">
         select count(*) from tb_newbee_mall_goods_info
         <where>
+            <if test="goodsId!=null and goodsId!=''">
+                and goods_id = #{goodsId}
+            </if>
             <if test="keyword!=null and keyword!=''">
                 and (goods_name like CONCAT('%',#{keyword},'%') or goods_intro like CONCAT('%',#{keyword},'%'))
             </if>
@@ -193,9 +199,9 @@
       update_user, update_time, goods_detail_content
       )
     values (#{goodsId,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, #{goodsIntro,jdbcType=VARCHAR}, 
-      #{goodsCoverImg,jdbcType=VARCHAR}, #{goodsCarousel,jdbcType=VARCHAR}, #{originalPrice,jdbcType=INTEGER}, 
-      #{sellingPrice,jdbcType=INTEGER}, #{stockNum,jdbcType=INTEGER}, #{tag,jdbcType=VARCHAR}, 
-      #{goodsSellStatus,jdbcType=TINYINT}, #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{goodsCoverImg,jdbcType=VARCHAR}, #{goodsCarousel,jdbcType=VARCHAR}, #{originalPrice,jdbcType=INTEGER},
+      #{sellingPrice,jdbcType=INTEGER}, #{stockNum,jdbcType=INTEGER}, #{tag,jdbcType=VARCHAR},
+      #{goodsSellStatus,jdbcType=TINYINT}, #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
       #{updateUser,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{goodsDetailContent,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -388,4 +394,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where goods_id = #{goodsId,jdbcType=BIGINT}
   </update>
+    <update id="reduceStockNum">
+        update tb_newbee_mall_goods_info set stock_num = stock_num - #{num,jdbcType=INTEGER} where goods_id = #{goodsId,jdbcType=BIGINT}
+    </update>
 </mapper>

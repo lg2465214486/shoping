@@ -96,6 +96,12 @@
             <if test="orderStatus!=null and orderStatus!=''">
                 and order_status = #{orderStatus}
             </if>
+            <if test="payStatus!=null and payStatus!=''">
+                and pay_status = #{payStatus}
+            </if>
+            <if test="payManage!=null and payManage!=''">
+                and pay_status in (0, -1)
+            </if>
             <if test="isDeleted!=null and isDeleted!=''">
                 and is_deleted = #{isDeleted}
             </if>
@@ -115,12 +121,12 @@
     insert into tb_newbee_mall_order (order_id, order_no, user_id, 
       total_price, pay_status, pay_type, 
       pay_time, order_status, extra_info, 
-      user_address,is_deleted, create_time, update_time
+      user_address,is_deleted, create_time, update_time, take_type
       )
     values (#{orderId,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
       #{totalPrice,jdbcType=DOUBLE}, #{payStatus,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT}, 
       #{payTime,jdbcType=TIMESTAMP}, #{orderStatus,jdbcType=TINYINT}, #{extraInfo,jdbcType=VARCHAR}, 
-       #{userAddress,jdbcType=VARCHAR},#{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+       #{userAddress,jdbcType=VARCHAR},#{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{takeType,jdbcType=VARCHAR}
       )
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="orderId"
@@ -166,6 +172,9 @@
             <if test="updateTime != null">
                 update_time,
             </if>
+            <if test="takeType != null">
+                take_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderId != null">
@@ -206,6 +215,9 @@
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="takeType != null">
+                #{takeType,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
