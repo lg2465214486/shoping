@@ -10,11 +10,13 @@ package ltd.newbee.mall.controller.admin;
 
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallOrderItemVO;
+import ltd.newbee.mall.dao.NewBeeMallOrderMapper;
 import ltd.newbee.mall.entity.NewBeeMallOrder;
 import ltd.newbee.mall.service.NewBeeMallOrderService;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -39,11 +41,36 @@ public class NewBeeMallOrderController {
 
     @Resource
     private NewBeeMallOrderService newBeeMallOrderService;
+    @Autowired
+    private NewBeeMallOrderMapper newBeeMallOrderMapper;
 
     @GetMapping("/orders")
     public String ordersPage(HttpServletRequest request) {
         request.setAttribute("path", "orders");
         return "admin/newbee_mall_order";
+    }
+
+    @GetMapping("/orders_manage")
+    public String ordersManagePage(HttpServletRequest request) {
+        request.setAttribute("path", "orders_manage");
+        return "admin/newbee_mall_order_manage";
+    }
+
+    @PostMapping("/orders_manage_yesOrNo")
+    @ResponseBody
+    public String ordersManageYesOrNo(@RequestBody List<Long> ids, @RequestParam Integer yesOrNo, HttpServletRequest request) {
+        for (Long id : ids) {
+            NewBeeMallOrder newBeeMallOrder = newBeeMallOrderMapper.selectByPrimaryKey(id);
+            if (yesOrNo == 1){
+                newBeeMallOrder.setPayStatus(new Byte("1"));
+                newBeeMallOrder.setOrderStatus(new Byte("1"));
+            }else {
+                newBeeMallOrder.setPayStatus(new Byte("-1"));
+                newBeeMallOrder.setOrderStatus(new Byte("-1"));
+            }
+            newBeeMallOrderMapper.updateByPrimaryKey(newBeeMallOrder);
+        }
+        return "1";
     }
 
     /**

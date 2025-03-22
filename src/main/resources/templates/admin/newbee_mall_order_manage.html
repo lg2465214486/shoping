@@ -41,21 +41,15 @@
             <div class="container-fluid">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">订单管理</h3>
+                        <h3 class="card-title">入账审核</h3>
                     </div> <!-- /.card-body -->
                     <div class="card-body">
                         <div class="grid-btn">
-                            <button class="btn btn-info" onclick="orderEdit()"><i
-                                    class="fa fa-pencil-square-o"></i>&nbsp;修改订单
+                            <button class="btn btn-info" onclick="orderManageYesOrNo(1)"><i
+                                    class="fa fa-truck"></i>&nbsp;通过
                             </button>
-                            <button class="btn btn-info" onclick="orderCheckDone()"><i
-                                    class="fa fa-truck"></i>&nbsp;配货完成
-                            </button>
-                            <button class="btn btn-info" onclick="orderCheckOut()"><i
-                                    class="fa fa-truck"></i>&nbsp;出库
-                            </button>
-                            <button class="btn btn-danger" onclick="closeOrder()"><i
-                                    class="fa fa-trash-o"></i>&nbsp;关闭订单
+                            <button class="btn btn-danger" onclick="orderManageYesOrNo(0)"><i
+                                    class="fa fa-trash-o"></i>&nbsp;不通过
                             </button>
                         </div>
                         <div class="form-group" style="display:flex;">
@@ -178,6 +172,6 @@
 <!-- sweetalert -->
 <script th:src="@{/admin/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
 <script th:src="@{/admin/dist/js/public.js}"></script>
-<script th:src="@{/admin/dist/js/newbee_mall_order.js}"></script>
+<script th:src="@{/admin/dist/js/newbee_mall_order_manage.js}"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/orders/list?payStatus=1',
+        url: '/admin/orders/list?payManage=1',
         datatype: "json",
         colModel: [
             {label: 'id', name: 'orderId', index: 'orderId', width: 50, key: true, hidden: true},
@@ -53,7 +53,7 @@ $(function () {
     function orderStatusFormatter(cellvalue) {
         //订单状态:0.待支付 1.已支付 2.配货完成 3:出库成功 4.交易成功 -1.手动关闭 -2.超时关闭 -3.商家关闭
         if (cellvalue == 0) {
-            return "待支付";
+            return "待审核";
         }
         if (cellvalue == 1) {
             return "已支付";
@@ -229,35 +229,14 @@ $('#saveButton').click(function () {
 /**
  * 订单拣货完成
  */
-function orderCheckDone() {
+function orderManageYesOrNo(yesOrNo) {
     var ids = getSelectedRows();
     if (ids == null) {
         return;
     }
-    var orderNos = '';
-    for (i = 0; i < ids.length; i++) {
-        var rowData = $("#jqGrid").jqGrid("getRowData", ids[i]);
-        if (rowData.orderStatus != '已支付') {
-            orderNos += rowData.orderNo + " ";
-        }
-    }
-    if (orderNos.length > 0 & orderNos.length < 100) {
-        Swal.fire({
-            text: orderNos + "订单的状态不是支付成功无法执行配货完成操作",
-            icon: "error",iconColor:"#f05b72",
-        });
-        return;
-    }
-    if (orderNos.length >= 100) {
-        Swal.fire({
-            text: "你选择了太多状态不是支付成功的订单，无法执行配货完成操作",
-            icon: "error",iconColor:"#f05b72",
-        });
-        return;
-    }
     Swal.fire({
         title: "确认弹框",
-        text: "确认要执行配货完成操作吗?",
+        text: "确认要执行操作吗?",
         icon: "warning",iconColor:"#dea32c",
         showCancelButton: true,
         confirmButtonText: '确认',
@@ -266,13 +245,13 @@ function orderCheckDone() {
             if (flag.value) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/orders/checkDone",
+                    url: "/admin/orders_manage_yesOrNo?yesOrNo="+yesOrNo,
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
-                        if (r.resultCode == 200) {
+                        if (r == "1") {
                             Swal.fire({
-                                text: "配货完成",
+                                text: "操作完成",
                                 icon: "success",iconColor:"#1d953f",
                             });
                             $("#jqGrid").trigger("reloadGrid");

@@ -35,6 +35,16 @@ public class NewBeeMallOrder {
 
     private Byte isDeleted;
 
+    private Integer takeType;
+
+    public Integer getTakeType() {
+        return takeType;
+    }
+
+    public void setTakeType(Integer takeType) {
+        this.takeType = takeType;
+    }
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

@@ -98,6 +98,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a th:href="@{/admin/orders_manage}" th:class="${path}=='orders_manage'?'nav-link active':'nav-link'">
+                        <i class="fa fa-money nav-icon" aria-hidden="true"></i>
+                        <p>
+                            入账审核
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a th:href="@{/admin/orders}" th:class="${path}=='orders'?'nav-link active':'nav-link'">
                         <i class="fa fa-money nav-icon" aria-hidden="true"></i>
                         <p>

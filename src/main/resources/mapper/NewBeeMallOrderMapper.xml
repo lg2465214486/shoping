@@ -15,10 +15,11 @@
         <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="take_type" jdbcType="INTEGER" property="takeType"/>
     </resultMap>
     <sql id="Base_Column_List">
     order_id, order_no, user_id, total_price, pay_status, pay_type, pay_time, order_status,
-    extra_info, user_name, user_phone, user_address, is_deleted, create_time, update_time
+    extra_info, user_name, user_phone, user_address, is_deleted, create_time, update_time, take_type
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -57,6 +58,12 @@
             </if>
             <if test="orderStatus!=null and orderStatus!=''">
                 and order_status = #{orderStatus}
+            </if>
+            <if test="payStatus!=null and payStatus!=''">
+                and pay_status = #{payStatus}
+            </if>
+            <if test="payManage!=null and payManage!=''">
+                and pay_status in (0, -1)
             </if>
             <if test="isDeleted!=null and isDeleted!=''">
                 and is_deleted = #{isDeleted}
@@ -111,7 +118,7 @@
       user_address,is_deleted, create_time, update_time
       )
     values (#{orderId,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
-      #{totalPrice,jdbcType=INTEGER}, #{payStatus,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT}, 
+      #{totalPrice,jdbcType=DOUBLE}, #{payStatus,jdbcType=TINYINT}, #{payType,jdbcType=TINYINT}, 
       #{payTime,jdbcType=TIMESTAMP}, #{orderStatus,jdbcType=TINYINT}, #{extraInfo,jdbcType=VARCHAR}, 
        #{userAddress,jdbcType=VARCHAR},#{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
@@ -171,7 +178,7 @@
                 #{userId,jdbcType=BIGINT},
             </if>
             <if test="totalPrice != null">
-                #{totalPrice,jdbcType=INTEGER},
+                #{totalPrice,jdbcType=DOUBLE},
             </if>
             <if test="payStatus != null">
                 #{payStatus,jdbcType=TINYINT},
@@ -236,7 +243,7 @@
                 user_id = #{userId,jdbcType=BIGINT},
             </if>
             <if test="totalPrice != null">
-                total_price = #{totalPrice,jdbcType=INTEGER},
+                total_price = #{totalPrice,jdbcType=DOUBLE},
             </if>
             <if test="payStatus != null">
                 pay_status = #{payStatus,jdbcType=TINYINT},
@@ -272,7 +279,8 @@
     update tb_newbee_mall_order
     set order_no = #{orderNo,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=BIGINT},
-      total_price = #{totalPrice,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DOUBLE},
+      take_type = #{takeType,jdbcType=DOUBLE},
       pay_status = #{payStatus,jdbcType=TINYINT},
       pay_type = #{payType,jdbcType=TINYINT},
       pay_time = #{payTime,jdbcType=TIMESTAMP},
