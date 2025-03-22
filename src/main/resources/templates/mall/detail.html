@@ -33,17 +33,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="shop-details-tab nav">
-                            <a class="shop-details-overly" href="#shop-details-1" data-toggle="tab">
-                                <img src="assets/img/product-details/small-1.jpg" alt="">
-                            </a>
-                            <a class="shop-details-overly active" href="#shop-details-2" data-toggle="tab">
-                                <img src="assets/img/product-details/small-2.jpg" alt="">
-                            </a>
-                            <a class="shop-details-overly" href="#shop-details-3" data-toggle="tab">
-                                <img src="assets/img/product-details/small-3.jpg" alt="">
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -68,10 +57,11 @@
 
                     <div class="pro-details-quality">
                         <div class="cart-plus-minus">
-                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
+                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1" id="addCart">
                         </div>
                         <div class="pro-details-cart btn-hover">
-                            <a th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'" >Add To Cart</a>
+                            <a th:if="${session.newBeeMallUser==null}" href="/login" >Add To Cart</a>
+                            <a th:if="${session.newBeeMallUser!=null}" th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'" >Add To Cart</a>
                         </div>
                     </div>
                 </div>
@@ -79,7 +69,7 @@
         </div>
     </div>
 </div>
-<div class="description-review-area pb-90">
+<div class="description-review-area">
     <div class="container">
         <div class="description-review-wrapper">
             <div class="description-review-topbar nav">
@@ -96,22 +86,72 @@
         </div>
     </div>
 </div>
+<div class="suppoer-area pt-100 pb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="support-wrap mb-30 support-1">
+                    <div class="support-icon">
+                        <img class="animated" src="/assets/img/icon-img/support-1.png" alt="">
+                    </div>
+                    <div class="support-content">
+                        <h5>Free Shipping</h5>
+                        <p>Free shipping on all order</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="support-wrap mb-30 support-2">
+                    <div class="support-icon">
+                        <img class="animated" src="/assets/img/icon-img/support-2.png" alt="">
+                    </div>
+                    <div class="support-content">
+                        <h5>Support 24/7</h5>
+                        <p>Free shipping on all order</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="support-wrap mb-30 support-3">
+                    <div class="support-icon">
+                        <img class="animated" src="/assets/img/icon-img/support-3.png" alt="">
+                    </div>
+                    <div class="support-content">
+                        <h5>Money Return</h5>
+                        <p>Free shipping on all order</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="support-wrap mb-30 support-4">
+                    <div class="support-icon">
+                        <img class="animated" src="/assets/img/icon-img/support-4.png" alt="">
+                    </div>
+                    <div class="support-content">
+                        <h5>Order Discount</h5>
+                        <p>Free shipping on all order</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- All JS is here
 ============================================ -->
 
 <!-- jQuery JS -->
-<script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
 <!-- Popper JS -->
-<script src="assets/js/popper.min.js"></script>
+<script src="/assets/js/popper.min.js"></script>
 <!-- Bootstrap JS -->
-<script src="assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 <!-- Plugins JS -->
-<script src="assets/js/plugins.js"></script>
+<script src="/assets/js/plugins.js"></script>
 <!-- Ajax Mail -->
-<script src="assets/js/ajax-mail.js"></script>
+<script src="/assets/js/ajax-mail.js"></script>
 <!-- Main JS -->
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/main.js"></script>
 <!-- jQuery -->
 <script th:src="@{/admin/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
 <script th:src="@{/mall/js/search.js}" type="text/javascript"></script>
@@ -120,7 +160,12 @@
      * 添加到购物车
      */
     function saveToCart(id) {
-        var goodsCount = 1;
+        var goodsCount = $("#addCart").val();
+        const regex = /^[0-9]*$/;
+        if(!regex.test(goodsCount) || goodsCount == ''){
+            alert("goods number error")
+            return;
+        }
         var data = {
             "goodsId": id,
             "goodsCount": goodsCount
@@ -133,12 +178,12 @@
             success: function (result) {
                 if (result.resultCode == 200) {
                     Swal.fire({
-                        title: "确认框",
-                        text: "添加成功",
+                        title: "Success",
+                        text: "Add Cart Success",
                         icon: "success",iconColor:"#1d953f",
                         showCancelButton: true,
-                        confirmButtonText: '确认',
-                        cancelButtonText: '取消'
+                        confirmButtonText: 'confirm',
+                        cancelButtonText: 'cancel'
                     }).then((flag) => {
                            if (flag.value) {
                                 window.location.reload();
@@ -178,8 +223,8 @@
             success: function (result) {
                 if (result.resultCode == 200) {
                     Swal.fire({
-                        title: "确认框",
-                        text: "已将商品加入购物车",
+                        title: "Success",
+                        text: "Add Cart Success",
                         icon: "success",iconColor:"#1d953f",
                         showCancelButton: true,
                         confirmButtonText: '去购物车结算',
