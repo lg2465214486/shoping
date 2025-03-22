@@ -1,19 +1,126 @@
 <!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="mall/header::head-fragment('NewBee商城-订单列表','my-orders')">
+<head th:replace="mall/header::head-fragment('shopping-orders','my-orders')">
 </head>
 <body>
 <header th:replace="mall/header::header-fragment"></header>
-<!-- nav -->
-<nav th:replace="mall/header::nav-fragment"></nav>
 
+<link rel="stylesheet" th:href="@{/mall/css/swiper-bundle.min.css}">
+<link rel="stylesheet" th:href="@{mall/css/iconfont.css}">
+<link rel="stylesheet" th:href="@{mall/css/common.css}">
+<link rel="stylesheet" th:href="@{mall/styles/header.css}">
+<link rel="stylesheet" th:href="@{mall/styles/cart.css}">
+<link rel="stylesheet" th:href="@{mall/styles/my-orders.css}">
+<link rel="stylesheet" th:href="@{mall/styles/personal.css.css}">
+<link rel="stylesheet" th:href="@{/admin/plugins/sweetalert2/sweetalert2.min.css}"/>
+
+<div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="active">Order List</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="cart-main-area pt-90 pb-100">
+    <div class="container">
+        <h3 class="cart-page-title">Your Order List</h3>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <form action="#">
+                    <div class="table-content table-responsive cart-table-content">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Order Goods</th>
+                                <th>Order Info</th>
+                                <th>SUM Price</th>
+                                <th>Order State</th>
+                                <th>Order Button</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="order : ${orderPageResult.list}">
+                                <td class="product-thumbnail">
+                                    <th:block
+                                            th:each="item : ${order.newBeeMallOrderItemVOS}">
+                                        <li>
+                                            <div class="figure figure-thumb">
+                                                <a target="_blank"
+                                                   th:href="@{'/goods/detail/'+${item.goodsId}}">
+                                                    <img th:src="@{${item.goodsCoverImg}}"
+                                                         width="80" height="80" alt="">
+                                                </a>
+                                            </div>
+                                            <p class="name"><a target="_blank"
+                                                               th:href="@{'/goods/detail/'+${item.goodsId}}"
+                                                               th:text="${item.goodsName}">newbee</a>
+                                            </p>
+                                            <p class="price"
+                                               th:text="${item.sellingPrice+'$ x '+item.goodsCount}">
+                                                13元 × 1</p></li>
+                                        <hr/>
+                                    </th:block>
+                                </td>
+                                <td class="product-name">
+                                    <p th:text="'OrderID: '+${order.orderNo}"></p>
+                                    <p th:text="'OrderTime: '+ ${#dates.format(order.createTime, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                    <!--                                    <p th:text="${order.totalPrice+'.00'}"></p>-->
+                                    <!--                                    <p th:text="${'GoodsCount:'+order.newBeeMallOrderItemVOS.count}"></p>-->
+                                </td>
+                                <td class="product-price-cart"><span class="amount"
+                                                                     th:text="${order.totalPrice+'.00 $'}">$260.00</span>
+                                </td>
+                                <td class="product-quantity">
+                                    <th:block th:if="${order.orderStatus==0}">
+                                        Pending approval
+                                    </th:block>
+                                    <th:block th:if="${order.orderStatus==1}">
+                                        Pay Success
+                                    </th:block>
+                                    <th:block th:if="${order.orderStatus==2}">
+                                        Delivery completed
+                                    </th:block>
+                                    <th:block th:if="${order.orderStatus ==3}">
+                                        Delivery successful
+                                    </th:block>
+
+                                </td>
+                                <td class="product-subtotal">
+                                    <div class="cart-shiping-update" style="border: 1px solid #595959;width: 80%;" >
+                                        <a >finishOrder</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="cart-shiping-update-wrapper">
+                                <div class="cart-shiping-update">
+                                    <a href="/">Continue Shopping</a>
+                                </div>
+                                <div class="cart-clear">
+                                    <button href="/shop-cart">Update Shopping Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- personal -->
 <div id="personal">
     <div class="self-info center">
-
-        <!-- sidebar -->
-        <div th:replace="mall/personal-sidebar::sidebar-fragment"></div>
 
         <div class="intro fr">
             <div class="uc-box uc-main-box">
@@ -54,11 +161,17 @@
                                             <table class="order-detail-table">
                                                 <thead>
                                                 <tr>
-                                                    <th class="col-main"><p class="caption-info">
-                                                        下单时间：<th:block th:text="${#dates.format(order.createTime, 'yyyy-MM-dd HH:mm:ss')}">02月07日</th:block>
-                                                        <span class="sep">|</span>订单号：<a
-                                                            th:href="@{${'/orders/'+order.orderNo}}"
-                                                            th:text="${order.orderNo}">201908121807</a></p></th>
+                                                    <th class="col-main">
+                                                        <p class="caption-info">
+                                                            下单时间：
+                                                            <th:block
+                                                                    th:text="${#dates.format(order.createTime, 'yyyy-MM-dd HH:mm:ss')}">
+                                                                02月07日
+                                                            </th:block>
+                                                            <span class="sep">|</span>订单号：<a
+                                                                th:href="@{${'/orders/'+order.orderNo}}"
+                                                                th:text="${order.orderNo}">201908121807</a></p>
+                                                    </th>
                                                     <th class="col-sub"><p class="caption-price">应付金额：<span
                                                             class="num"
                                                             th:text="${order.totalPrice+'.00'}">1299.00</span>元
@@ -95,50 +208,90 @@
                                                 </tr>
                                                 </tbody>
                                             </table>
+                                        </li>
+                                    </th:block>
+                                </th:block>
+                            </ul>
                         </div>
-                        </li>
-                        </th:block>
-                        </th:block>
-                        </ul>
-                    </div>
-                    <th:block th:unless="${#lists.isEmpty(orderPageResult.list)}">
-                        <div id="J_orderListPages">
-                            <div class="newbee-pagenavi">
-                                <th:block th:if="${orderPageResult.currPage-2 >=1}"><a
-                                        class="numbers"
-                                        th:href="@{'/orders?page=' + ${orderPageResult.currPage-2}}"
-                                        th:text="${orderPageResult.currPage -2}">1</a>
-                                </th:block>
-                                <th:block th:if="${orderPageResult.currPage-1 >=1}"><a
-                                        class="numbers"
-                                        th:href="@{'/orders?page=' + ${orderPageResult.currPage-1}}"
-                                        th:text="${orderPageResult.currPage -1}">1</a>
-                                </th:block>
-                                <a href="##" class="numbers current" th:text="${orderPageResult.currPage}">1</a>
-                                <th:block th:if="${orderPageResult.currPage+1<=orderPageResult.totalPage}"><a
-                                        class="numbers"
-                                        th:href="@{'/orders?page=' + ${orderPageResult.currPage+1}}"
-                                        th:text="${orderPageResult.currPage +1}">1</a></th:block>
-                                <th:block th:if="${orderPageResult.currPage+2<=orderPageResult.totalPage}"><a
-                                        class="numbers"
-                                        th:href="@{'/orders?page=' + ${orderPageResult.currPage+2}}"
-                                        th:text="${orderPageResult.currPage +2}">1</a></th:block>
+                        <th:block th:unless="${#lists.isEmpty(orderPageResult.list)}">
+                            <div id="J_orderListPages">
+                                <div class="newbee-pagenavi">
+                                    <th:block th:if="${orderPageResult.currPage-2 >=1}"><a
+                                            class="numbers"
+                                            th:href="@{'/orders?page=' + ${orderPageResult.currPage-2}}"
+                                            th:text="${orderPageResult.currPage -2}">1</a>
+                                    </th:block>
+                                    <th:block th:if="${orderPageResult.currPage-1 >=1}"><a
+                                            class="numbers"
+                                            th:href="@{'/orders?page=' + ${orderPageResult.currPage-1}}"
+                                            th:text="${orderPageResult.currPage -1}">1</a>
+                                    </th:block>
+                                    <a href="##" class="numbers current" th:text="${orderPageResult.currPage}">1</a>
+                                    <th:block th:if="${orderPageResult.currPage+1<=orderPageResult.totalPage}"><a
+                                            class="numbers"
+                                            th:href="@{'/orders?page=' + ${orderPageResult.currPage+1}}"
+                                            th:text="${orderPageResult.currPage +1}">1</a></th:block>
+                                    <th:block th:if="${orderPageResult.currPage+2<=orderPageResult.totalPage}"><a
+                                            class="numbers"
+                                            th:href="@{'/orders?page=' + ${orderPageResult.currPage+2}}"
+                                            th:text="${orderPageResult.currPage +2}">1</a></th:block>
+                                </div>
                             </div>
-                        </div>
-                    </th:block>
+                        </th:block>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="clear"></div>
     </div>
-    <div class="clear"></div>
-</div>
 </div>
 
-<div th:replace="mall/footer::footer-fragment"></div>
 
 <!-- jQuery -->
-<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
 <script th:src="@{/mall/js/search.js}" type="text/javascript"></script>
+
+<!-- JS
+============================================ -->
+
+<!-- jQuery JS -->
+<script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+<!-- Popper JS -->
+<script src="assets/js/popper.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="assets/js/bootstrap.min.js"></script>
+<!-- Plugins JS -->
+<script src="assets/js/plugins.js"></script>
+<!-- Ajax Mail -->
+<script src="assets/js/ajax-mail.js"></script>
+<!-- Main JS -->
+<script src="assets/js/main.js"></script>
+
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script th:src="@{/admin/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
+<script type="text/javascript">
+    function finishOrder(orderNo) {
+        $.ajax({
+            type: 'PUT',
+            url: '/orders/' + orderNo + '/finish',
+            success: function (result) {
+                if (result.resultCode == 200) {
+                    window.location.reload();
+                } else {
+                    Swal.fire({
+                        text: result.message,
+                        icon: "error", iconColor: "#f05b72",
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    text: "操作失败",
+                    icon: "error", iconColor: "#f05b72",
+                });
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
