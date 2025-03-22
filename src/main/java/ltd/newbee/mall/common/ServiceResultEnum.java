@@ -19,59 +19,59 @@ public enum ServiceResultEnum {
 
     SUCCESS("success"),
 
-    DATA_NOT_EXIST("未查询到记录！"),
+    DATA_NOT_EXIST("No records found！"),
 
-    SAME_CATEGORY_EXIST("已存在同级同名的分类！"),
+    SAME_CATEGORY_EXIST("There already exists a category with the same level and name！"),
 
-    SAME_LOGIN_NAME_EXIST("用户名已存在！"),
+    SAME_LOGIN_NAME_EXIST("The user already exists！"),
 
-    LOGIN_NAME_NULL("请输入登录名！"),
+    LOGIN_NAME_NULL("Please enter your login name！"),
 
-    LOGIN_PASSWORD_NULL("请输入密码！"),
+    LOGIN_PASSWORD_NULL("Please input a password！"),
 
-    LOGIN_VERIFY_CODE_NULL("请输入验证码！"),
+    LOGIN_VERIFY_CODE_NULL("Please enter the verification code！"),
 
-    LOGIN_VERIFY_CODE_ERROR("验证码错误！"),
+    LOGIN_VERIFY_CODE_ERROR("Verification code error！"),
 
-    SAME_INDEX_CONFIG_EXIST("已存在相同的首页配置项！"),
+    SAME_INDEX_CONFIG_EXIST("The same homepage configuration item already exists！"),
 
-    GOODS_CATEGORY_ERROR("分类数据异常！"),
+    GOODS_CATEGORY_ERROR("Abnormal classification data！"),
 
-    SAME_GOODS_EXIST("已存在相同的商品信息！"),
+    SAME_GOODS_EXIST("The same product information already exists！"),
 
-    GOODS_NOT_EXIST("商品不存在！"),
+    GOODS_NOT_EXIST("The product does not exist！"),
 
-    GOODS_PUT_DOWN("商品已下架！"),
+    GOODS_PUT_DOWN("The product has been taken down！"),
 
-    SHOPPING_CART_ITEM_LIMIT_NUMBER_ERROR("超出单个商品的最大购买数量！"),
+    SHOPPING_CART_ITEM_LIMIT_NUMBER_ERROR("Exceeding the maximum purchase quantity for a single product！"),
 
-    SHOPPING_CART_ITEM_TOTAL_NUMBER_ERROR("超出购物车最大容量！"),
+    SHOPPING_CART_ITEM_TOTAL_NUMBER_ERROR("Exceeding the maximum capacity of the shopping cart！"),
 
-    LOGIN_ERROR("登录失败！"),
+    LOGIN_ERROR("Login failed！"),
 
-    LOGIN_USER_LOCKED("用户已被禁止登录！"),
+    LOGIN_USER_LOCKED("The user has been banned from logging in！"),
 
-    ORDER_NOT_EXIST_ERROR("订单不存在！"),
+    ORDER_NOT_EXIST_ERROR("Order does not exist！"),
 
-    ORDER_ITEM_NOT_EXIST_ERROR("订单项不存在！"),
+    ORDER_ITEM_NOT_EXIST_ERROR("The order item does not exist！"),
 
-    NULL_ADDRESS_ERROR("地址不能为空！"),
+    NULL_ADDRESS_ERROR("The address cannot be empty！"),
 
-    ORDER_PRICE_ERROR("订单价格异常！"),
+    ORDER_PRICE_ERROR("Abnormal order price！"),
 
-    ORDER_GENERATE_ERROR("生成订单异常！"),
+    ORDER_GENERATE_ERROR("Order generation exception！"),
 
-    SHOPPING_ITEM_ERROR("购物车数据异常！"),
+    SHOPPING_ITEM_ERROR("Abnormal shopping cart data！"),
 
-    SHOPPING_ITEM_COUNT_ERROR("库存不足！"),
+    SHOPPING_ITEM_COUNT_ERROR("Insufficient inventory！"),
 
-    ORDER_STATUS_ERROR("订单状态异常！"),
+    ORDER_STATUS_ERROR("Abnormal order status！"),
 
-    CLOSE_ORDER_ERROR("关闭订单失败！"),
+    CLOSE_ORDER_ERROR("Failed to close order！"),
 
-    OPERATE_ERROR("操作失败！"),
+    OPERATE_ERROR("operation failed！"),
 
-    NO_PERMISSION_ERROR("无权限！"),
+    NO_PERMISSION_ERROR("No permission！"),
 
     DB_ERROR("database error");
 

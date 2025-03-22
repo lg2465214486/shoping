@@ -14,15 +14,15 @@
 	============================================ -->
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <!-- Icon Font CSS -->
-    <link rel="stylesheet" href="assets/css/icons.min.css">
+    <link rel="stylesheet" href="/assets/css/icons.min.css">
     <!-- Plugins CSS -->
-    <link rel="stylesheet" href="assets/css/plugins.css">
+    <link rel="stylesheet" href="/assets/css/plugins.css">
     <!-- Main Style CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <!-- Modernizer JS -->
-    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/assets/js/vendor/modernizr-2.8.3.min.js"></script>
 
     <meta name="keywords"  th:content="${title}" />
     <meta name="description" th:content="${title}"/>
@@ -63,18 +63,18 @@
                         </div>
                     </div>
                     <div class="same-style account-satting">
-                        <a class="account-satting-active" href="#"><i class="pe-7s-user-female"></i></a>
+                        <a class="account-satting-active" href="#"><i class="pe-7s-user-female"></i>
+                        </a>
                         <div class="account-dropdown">
                             <ul>
-                                <li><a href="login-register.html" th:if="${session.newBeeMallUser==null}">Login</a></li>
-                                <li><a href="login-register.html" th:if="${session.newBeeMallUser==null}">Register</a></li>
-                                <li><a href="wishlist.html">Wishlist </a></li>
-                                <li><a href="my-account.html">my account</a></li>
+                                <li><a href="/login" th:if="${session.newBeeMallUser==null}">Login/Register</a></li>
+                                <li th:if="${session.newBeeMallUser!=null}"><a href="/order" >Order</a></li>
+                                <li th:if="${session.newBeeMallUser!=null}"><a href="/logout" >Log Out</a></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="same-style header-wishlist">
-                        <a href="wishlist.html"><i class="pe-7s-like"></i></a>
+                    <div>
+                        <span th:if="${session.newBeeMallUser!=null}" th:text="${session.newBeeMallUser.loginName}">my account</span>
                     </div>
                     <div class="same-style cart-wrap">
                         <button class="icon-cart">

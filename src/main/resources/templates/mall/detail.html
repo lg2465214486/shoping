@@ -1,64 +1,99 @@
 <!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="mall/header::head-fragment('NewBee商城-商品详情','detail')">
+<head th:replace="mall/header::head-fragment('shopping-detail','detail')">
 </head>
 <body>
 <header th:replace="mall/header::header-fragment"></header>
 
-<div id="detail">
-
-    <div class="dc">
-        <div class="content w">
-            <div class="title fl">商品详情</div>
-            <div class="clear"></div>
+<div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                    </li>
+                    <li class="active">Shop Details </li>
+            </ul>
         </div>
     </div>
+</div>
+<div class="shop-area pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product-details">
+                    <div class="product-details-img">
+                        <div class="tab-content jump">
+                            <div id="shop-details-2" class="tab-pane active large-img-style">
+                                <img th:src="@{${goodsDetail.goodsCoverImg}}">
+<!--                                <span class="dec-price" th:text="${goodsDetail.tag}">-10%</span>-->
+                                <div class="img-popup-wrap">
+                                    <a class="img-popup" th:href="@{${goodsDetail.goodsCoverImg}}"><i class="pe-7s-expand1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="shop-details-tab nav">
+                            <a class="shop-details-overly" href="#shop-details-1" data-toggle="tab">
+                                <img src="assets/img/product-details/small-1.jpg" alt="">
+                            </a>
+                            <a class="shop-details-overly active" href="#shop-details-2" data-toggle="tab">
+                                <img src="assets/img/product-details/small-2.jpg" alt="">
+                            </a>
+                            <a class="shop-details-overly" href="#shop-details-3" data-toggle="tab">
+                                <img src="assets/img/product-details/small-3.jpg" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product-details-content ml-70">
+                    <h2  th:text="${goodsDetail.goodsName}">Products Name Here</h2>
+                    <div class="product-details-price">
+                        <span th:text="${goodsDetail.sellingPrice}+'.00 $'">$18.00 </span>
+                        <span class="old" th:text="${goodsDetail.originalPrice}+'.00 $'">$20.00 </span>
+                    </div>
+                    <div class="pro-details-rating-wrap">
+                        <div class="pro-details-rating">
+                            <i class="fa fa-star-o yellow"></i>
+                            <i class="fa fa-star-o yellow"></i>
+                            <i class="fa fa-star-o yellow"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                        <span><a href="#">3 Reviews</a></span>
+                    </div>
+                    <p th:text="${goodsDetail.goodsIntro}">Lorem ipsum dolor sit amet, consectetur adipisic elit eiusm tempor incidid ut labore et dolore magna aliqua. Ut enim ad minim venialo quis nostrud exercitation ullamco</p>
 
-    <div class="intro mt20 w clearfix">
-        <div class="left fl" style="position: relative;">
-            <div class="swiper-container fl">
-                <img th:src="@{${goodsDetail.goodsCoverImg}}">
+                    <div class="pro-details-quality">
+                        <div class="cart-plus-minus">
+                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
+                        </div>
+                        <div class="pro-details-cart btn-hover">
+                            <a th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'" >Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="right fr">
-            <div class="h3 ml20 mt20" th:text="${goodsDetail.goodsName}">NewBeeMall</div>
-            <div class="sub_title mr40 ml20 mt10" th:text="${goodsDetail.goodsIntro}">NewBeeMall</div>
-            <div class="item_price mr40 ml20 mt10">
-                <th:block th:text="${goodsDetail.sellingPrice}+'.00 元'"></th:block>
-                <del>
-                    <th:block th:text="${goodsDetail.originalPrice}+'.00 元'"></th:block>
-                </del>
-            </div>
-
-            <div class="order">
-                <input class="car" type="button" th:onclick="'saveAndGoCart('+${goodsDetail.goodsId}+')'" value="立即选购"/>
-                <input class="car" type="button" th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'" value="加入购物车"/>
-            </div>
-            <div class="tb-extra ml20" id="J_tbExtra">
-                <dl>
-                    <dt>承诺</dt>
-                    <dd><a class="J_Cont" title="满足7天无理由退换货申请的前提下，包邮商品需要买家承担退货邮费，非包邮商品需要买家承担发货和退货邮费。" href="#"
-                           target="_blank"><img th:src="@{/mall/image/7d.jpg}">7天无理由</a></dd>
-                </dl>
-                <dl>
-                    <dt>支付</dt>
-                    <dd><a href="##" target="_blank"><img th:src="@{/mall/image/hua.png}">蚂蚁花呗</a><a href="##"
-                                                                                                     target="_blank"><img
-                            th:src="@{/mall/image/card.png}">信用卡支付</a><a href="##" target="_blank"><img
-                            th:src="@{/mall/image/ji.png}">集分宝</a></dd>
-                </dl>
-                <dl>
-                    <dt>支持</dt>
-                    <dd>折旧变现，买新更省钱。<a style="float:none;text-decoration: underline;" href="##">详情</a></dd>
-                </dl>
-
-            </div>
-        </div>
-        <div class="clear"></div>
     </div>
-    <!-- 这里使用的是 th:utext 标签，用 th:text 不会解析 html，用 th:utext 会解析 html -->
-    <div class="goods mt20 w clearfix" th:utext="${goodsDetail.goodsDetailContent}">
+</div>
+<div class="description-review-area pb-90">
+    <div class="container">
+        <div class="description-review-wrapper">
+            <div class="description-review-topbar nav">
+                <a class="active" data-toggle="tab" href="#des-details2">Description</a>
+            </div>
+            <div class="tab-content description-review-bottom">
+                <div id="des-details2" class="tab-pane active">
+                    <div class="product-description-wrapper" th:utext="${goodsDetail.goodsDetailContent}">
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt</p>
+                        <p>ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commo consequat. Duis aute irure dolor in reprehend in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
