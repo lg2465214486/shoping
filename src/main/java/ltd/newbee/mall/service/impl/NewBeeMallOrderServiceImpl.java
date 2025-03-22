@@ -184,7 +184,7 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
 
     @Override
     @Transactional
-    public String saveOrder(NewBeeMallUserVO user, List<NewBeeMallShoppingCartItemVO> myShoppingCartItems) {
+    public String saveOrder(NewBeeMallUserVO user, List<NewBeeMallShoppingCartItemVO> myShoppingCartItems,OrderDataVO orderDataVO) {
         List<Long> itemIdList = myShoppingCartItems.stream().map(NewBeeMallShoppingCartItemVO::getCartItemId).collect(Collectors.toList());
         List<Long> goodsIds = myShoppingCartItems.stream().map(NewBeeMallShoppingCartItemVO::getGoodsId).collect(Collectors.toList());
         List<NewBeeMallGoods> newBeeMallGoods = newBeeMallGoodsMapper.selectByPrimaryKeys(goodsIds);
@@ -223,7 +223,14 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
                 NewBeeMallOrder newBeeMallOrder = new NewBeeMallOrder();
                 newBeeMallOrder.setOrderNo(orderNo);
                 newBeeMallOrder.setUserId(user.getUserId());
-                newBeeMallOrder.setUserAddress(user.getAddress());
+                newBeeMallOrder.setUserAddress(orderDataVO.getAddress());
+                newBeeMallOrder.setPayStatus(new Byte("0"));//待审核
+                newBeeMallOrder.setOrderStatus(new Byte("0"));//待审核
+                newBeeMallOrder.setPayTime(new Date());
+                newBeeMallOrder.setTakeType(orderDataVO.getTakeType());//提货方式
+                newBeeMallOrder.setPayType(orderDataVO.getPayType());//支付方式
+
+
                 //总价
                 for (NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO : myShoppingCartItems) {
                     priceTotal += NumberUtil.doubleHALF_UP(newBeeMallShoppingCartItemVO.getGoodsCount() * newBeeMallShoppingCartItemVO.getSellingPrice());

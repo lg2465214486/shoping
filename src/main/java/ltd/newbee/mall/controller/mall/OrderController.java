@@ -15,6 +15,7 @@ import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallOrderDetailVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
+import ltd.newbee.mall.controller.vo.OrderDataVO;
 import ltd.newbee.mall.entity.NewBeeMallOrder;
 import ltd.newbee.mall.service.NewBeeMallOrderService;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
@@ -64,22 +65,23 @@ public class OrderController {
         return "mall/my-orders";
     }
 
-    @GetMapping("/saveOrder")
-    public String saveOrder(HttpSession httpSession) {
+    @PostMapping("/saveOrder")
+    @ResponseBody
+    public Result saveOrder(HttpSession httpSession,@RequestBody OrderDataVO orderDataVO) {
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
         List<NewBeeMallShoppingCartItemVO> myShoppingCartItems = newBeeMallShoppingCartService.getMyShoppingCartItems(user.getUserId());
         if (!StringUtils.hasText(user.getAddress().trim())) {
             //无收货地址
-            NewBeeMallException.fail(ServiceResultEnum.NULL_ADDRESS_ERROR.getResult());
+
         }
         if (CollectionUtils.isEmpty(myShoppingCartItems)) {
             //购物车中无数据则跳转至错误页
             NewBeeMallException.fail(ServiceResultEnum.SHOPPING_ITEM_ERROR.getResult());
         }
         //保存订单并返回订单号
-        String saveOrderResult = newBeeMallOrderService.saveOrder(user, myShoppingCartItems);
+        String saveOrderResult = newBeeMallOrderService.saveOrder(user, myShoppingCartItems,orderDataVO);
         //跳转到订单详情页
-        return "redirect:/orders/" + saveOrderResult;
+        return ResultGenerator.genSuccessResult(saveOrderResult);
     }
 
     @PutMapping("/orders/{orderNo}/cancel")

@@ -77,7 +77,7 @@
                         <span th:if="${session.newBeeMallUser!=null}" th:text="${session.newBeeMallUser.loginName}">my account</span>
                     </div>
                     <div class="same-style cart-wrap">
-                        <button class="icon-cart" th:if="${session.newBeeMallUser!=null}">
+                        <button class="icon-cart" th:if="${session.newBeeMallUser!=null}" onclick="window.location = '/shop-cart'">
                             <i class="pe-7s-shopbag"></i>
                             <span class="count-style" th:if="${session.newBeeMallUser!=null}" th:text="${session.newBeeMallUser.shopCartItemCount}">0</span>
                         </button>

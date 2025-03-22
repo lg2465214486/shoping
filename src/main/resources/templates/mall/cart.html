@@ -1,106 +1,220 @@
 <!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>NewBee商城-购物车</title>
-    <link rel="stylesheet" th:href="@{mall/css/iconfont.css}">
-    <link rel="stylesheet" th:href="@{mall/css/common.css}">
-    <link rel="stylesheet" th:href="@{mall/styles/header.css}">
-    <link rel="stylesheet" th:href="@{mall/styles/cart.css}">
-    <link rel="stylesheet" th:href="@{/admin/plugins/sweetalert2/sweetalert2.min.css}"/>
+<head th:replace="mall/header::head-fragment('shopping-cart','detail')">
 </head>
 <body>
-
-<div id="cart">
-    <div class="banner_x center">
-        <a th:href="@{/index}" target="_blank">
-            <div class="logo fl">
-                <img src="mall/image/new-bee-logo-3.png"/>
-            </div>
-        </a>
-
-        <div class="wdgwc fl ml20">购物车</div>
-        <div class="wxts fl ml20">温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</div>
-        <div class="clear"></div>
-    </div>
-    <div class="cart_line"></div>
-    <div class="cart_bg">
-        <th:block th:if="${#lists.isEmpty(myShoppingCartItems)}">
-            <div class="list center">
-                <img style="position: absolute;margin-top: 16px;left: 45%;" th:src="@{/mall/image/null-content.png}">
-            </div>
-        </th:block>
-        <th:block th:unless="${#lists.isEmpty(myShoppingCartItems)}">
-            <div class="list center">
-                <div class="top2 center">
-                    <div class="sub_top fl">
-                    </div>
-                    <div class="sub_top fl">商品名称</div>
-                    <div class="sub_top fl">单价</div>
-                    <div class="sub_top fl">数量</div>
-                    <div class="sub_top fl">小计</div>
-                    <div class="sub_top fr">操作</div>
-                    <div class="clear"></div>
-                </div>
-                <th:block th:each="item : ${myShoppingCartItems}">
-                    <div class="content2 center">
-                        <div class="sub_content fl ">
-                        </div>
-                        <div class="sub_content cover fl"><img th:src="@{${item.goodsCoverImg}}"></div>
-                        <div class="sub_content fl ft20" th:text="${item.goodsName}">商品名称</div>
-                        <div class="sub_content fl" th:text="${item.sellingPrice+'元'}">1299元</div>
-                        <div class="sub_content fl">
-                            <input class="goods_count" th:id="${'goodsCount'+item.cartItemId}" type="number"
-                                   th:onblur="'updateItem('+${item.cartItemId}+')'"
-                                   th:value="${item.goodsCount}" step="1" min="1"
-                                   max="5">
-                        </div>
-                        <div class="sub_content fl" th:text="${item.goodsCount*item.sellingPrice+'元'}">1299元</div>
-                        <div class="sub_content fl"><a href="##" th:onclick="'deleteItem('+${item.cartItemId}+')'">×</a>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                </th:block>
-            </div>
-        </th:block>
-        <div class="pre_order mt20 center">
-            <div class="tips fl ml20">
-                <ul>
-                    <li><a th:href="@{/index}">继续购物</a></li>
-                    <li>|</li>
-                    <li>共<span th:text="${itemsTotal}">13</span>件商品</li>
-                    <div class="clear"></div>
-                </ul>
-            </div>
-            <div class="order_div fr">
-                <div class="order_total fl">合计（不含运费）：<span th:text="${priceTotal}+'.00元'">1299.00元</span></div>
-                <div class="order_button fr">
-                    <th:block th:if="${itemsTotal == 0}">
-                        <input class="order_button_c" type="button" name="tip"
-                               onclick="tip()"
-                               value="去结算"/>
-                    </th:block>
-                    <th:block th:unless="${itemsTotal == 0}">
-                        <input class="order_button_d" type="button" name="settle"
-                               onclick="settle()"
-                               value="去结算"/>
-                    </th:block>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="clear"></div>
+<header th:replace="mall/header::header-fragment"></header>
+<div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="active">Cart Page </li>
+            </ul>
         </div>
     </div>
 </div>
-<div th:replace="mall/footer::footer-fragment"></div>
+<div class="cart-main-area pt-90 pb-100">
+    <div class="container">
+        <h3 class="cart-page-title">Your cart items</h3>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <form action="#">
+                    <div class="table-content table-responsive cart-table-content">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>Until Price</th>
+                                <th>Qty</th>
+                                <th>Subtotal</th>
+                                <th>action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item : ${myShoppingCartItems}">
+                                <td class="product-thumbnail">
+                                    <a th:href="@{'/goods/detail/'+${item.goodsId}}"><img th:src="@{${item.goodsCoverImg}}" th:alt="${item.goodsName}"></a>
+                                </td>
+                                <td class="product-name" ><a th:href="@{'/goods/detail/'+${item.goodsId}}" th:text="${item.goodsName}">Product Name</a></td>
+                                <td class="product-price-cart"><span class="amount" th:text="${item.sellingPrice+'$'}">$260.00</span></td>
+                                <td class="product-quantity">
+                                    <input th:id="${'goodsCount'+item.cartItemId}"
+                                           th:onblur="'updateItem('+${item.cartItemId}+')'"
+                                           th:value="${item.goodsCount}"
+                                           th:oninput="'updateItem('+${item.cartItemId}+')'"
+                                             type="number" >
+                                </td>
+                                <td class="product-subtotal" th:text="${item.goodsCount*item.sellingPrice+'$'}">110.00</td>
+                                <td class="product-remove" th:onclick="'deleteItem('+${item.cartItemId}+')'">
+                                    <a href="#"><i class="fa fa-times"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="cart-shiping-update-wrapper">
+                                <div class="cart-shiping-update">
+                                    <a href="/">Continue Shopping</a>
+                                </div>
+                                <div class="cart-clear">
+                                    <button href="/shop-cart">Update Shopping Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="cart-tax">
+                            <div class="title-wrap">
+                                <h4 class="cart-bottom-title section-bg-gray">Delivery method</h4>
+                            </div>
+                            <div class="tax-wrapper">
+                                <div class="tax-select-wrapper">
+                                    <div class="tax-select">
+                                        <label>
+                                            * Delivery method
+                                        </label>
+                                        <select class="email s-email s-wid" id="deliveryMethod">
+                                            <option value="1">delivery</option>
+                                            <option value="0">Self pickup</option>
+                                        </select>
+                                    </div>
+                                    <div class="tax-select">
+                                        <label>
+                                            * contacts
+                                        </label>
+                                        <input type="text" id="contacts">
+                                    </div>
+                                    <div class="tax-select">
+                                        <label>
+                                            * cell-phone number
+                                        </label>
+                                        <input type="text" id="phoneNumber">
+                                    </div>
+                                    <div class="tax-select">
+                                        <label>
+                                             detailed address
+                                        </label>
+                                        <input type="text" id="address">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="grand-totall">
+                            <div class="title-wrap">
+                                <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
+                            </div>
+                            <h5>Total products <span th:text="${itemsTotal}">$260.00</span></h5>
+                            <div class="total-shipping">
+                                <h5>Payment method</h5>
+                                <ul>
+                                    <li><input type="radio" name="payType" value="1" checked> USTD</input></li>
+                                    <li><input type="radio" name="payType" value="2"> Bank Card</input></li>
+                                </ul>
+                            </div>
+                            <h4 class="grand-totall-title">Grand Total  <span th:text="${priceTotal+'$'}">$260.00</span></h4>
+                            <a id="saveButton">Proceed to Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
+
+<!-- All JS is here
+============================================ -->
+
+<!-- jQuery JS -->
+<script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+<!-- Popper JS -->
+<script src="/assets/js/popper.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!-- Plugins JS -->
+<script src="/assets/js/plugins.js"></script>
+<!-- Ajax Mail -->
+<script src="/assets/js/ajax-mail.js"></script>
+<!-- Main JS -->
+<script src="/assets/js/main.js"></script>
 <!-- jQuery -->
 <script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
 <script th:src="@{/admin/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
-<script type="text/javascript">
 
+<script type="text/javascript">
+    $('#saveButton').click(function () {
+        var deliveryMethod = $("#deliveryMethod").val();
+        var payType = "0";
+        var radios = document.getElementsByName('payType');
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                // 如果单选按钮被选中，返回它的值
+                payType = radios[i].value;
+            }
+        }
+
+        var contacts = $("#contacts").val();
+        var phoneNumber = $("#phoneNumber").val();
+        var address = $("#address").val();
+
+        if (contacts == '' || contacts.length > 255){
+            alert("contacts value 1-255 size");
+            return
+        }
+
+        if (phoneNumber == '' || phoneNumber.length > 255){
+            alert("phoneNumber 1-255 size");
+            return
+        }
+
+        if (address == '' || address.length > 255){
+            alert("address 1-255 size");
+            return
+        }
+
+        var data = {
+            "takeType": deliveryMethod,
+            "address": "联系人："+contacts+"\n手机号："+phoneNumber+"\n详细地址："+address,
+            "payType": payType
+        };
+        $.ajax({
+            type: 'POST',//方法类型
+            url: '/saveOrder',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.resultCode == 200) {
+                    $('#personalInfoModal').modal('hide');
+                    window.location.reload();
+                } else {
+                    $('#personalInfoModal').modal('hide');
+                    Swal.fire({
+                        text: result.message,
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                }
+                ;
+            },
+            error: function () {
+                Swal.fire({
+                    text: 'error',
+                    icon: "error",iconColor:"#f05b72",
+                });
+            }
+        });
+    });
     /**
      * 购物车中数量为0时提示
      */
@@ -124,18 +238,20 @@
     function updateItem(id) {
         var domId = 'goodsCount' + id;
         var goodsCount = $("#" + domId).val();
-        if (goodsCount > 5) {
+        if (goodsCount > 999) {
             Swal.fire({
-                text: "单个商品最多可购买5个",
+                text: "one goods max size 999",
                 icon: "error",iconColor:"#f05b72",
             });
+            $("#" + domId).val(100);
             return;
         }
         if (goodsCount < 1) {
             Swal.fire({
-                text: "数量异常",
+                text: "one goods min size 1",
                 icon: "error",iconColor:"#f05b72",
             });
+            $("#" + domId).val(1);
             return;
         }
         var data = {
@@ -172,12 +288,12 @@
      */
     function deleteItem(id) {
         Swal.fire({
-            title: "确认弹框",
-            text: "确认要删除数据吗?",
+            title: "delete",
+            text: "is cart goods?",
             icon: "warning",iconColor:"#dea32c",
             showCancelButton: true,
-            confirmButtonText: '确认',
-            cancelButtonText: '取消'
+            confirmButtonText: 'OK',
+            cancelButtonText: 'cancel'
         }).then((flag) => {
                 if (flag.value) {
                     $.ajax({
@@ -188,14 +304,14 @@
                                 window.location.reload();
                             } else {
                                 Swal.fire({
-                                    text: "操作失败",
+                                    text: "error",
                                     icon: "error",iconColor:"#f05b72",
                                 });
                             }
                         },
                         error: function () {
                             Swal.fire({
-                                text: "操作失败",
+                                text: "error",
                                 icon: "error",iconColor:"#f05b72",
                             });
                         }

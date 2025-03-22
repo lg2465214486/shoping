@@ -8,10 +8,7 @@
  */
 package ltd.newbee.mall.service;
 
-import ltd.newbee.mall.controller.vo.NewBeeMallOrderDetailVO;
-import ltd.newbee.mall.controller.vo.NewBeeMallOrderItemVO;
-import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
-import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
+import ltd.newbee.mall.controller.vo.*;
 import ltd.newbee.mall.entity.NewBeeMallOrder;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
@@ -66,7 +63,7 @@ public interface NewBeeMallOrderService {
      * @param myShoppingCartItems
      * @return
      */
-    String saveOrder(NewBeeMallUserVO user, List<NewBeeMallShoppingCartItemVO> myShoppingCartItems);
+    String saveOrder(NewBeeMallUserVO user, List<NewBeeMallShoppingCartItemVO> myShoppingCartItems, OrderDataVO orderDataVO);
 
     /**
      * 获取订单详情
