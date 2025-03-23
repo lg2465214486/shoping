@@ -23,6 +23,10 @@
                                 </a>
                                 <span class="pink">Popular</span>
                                 <div class="product-action">
+                                    <div class="pro-same-action pro-quickview">
+                                        <a title="Quick View" th:href="@{'/goods/detail/'+${hotGoodse.goodsId}}"
+                                           data-target="#exampleModal"><i class="pe-7s-look"></i></a>
+                                    </div>
                                     <div class="pro-same-action pro-cart">
                                         <a title="Add To Cart" href="/login"  th:if="${session.newBeeMallUser==null}" ><i class="pe-7s-cart"></i> Add to cart</a>
                                         <a title="Add To Cart"   th:if="${session.newBeeMallUser!=null}" th:onclick="'saveToCart('+${hotGoodse.goodsId}+')'" ><i class="pe-7s-cart"></i> Add to cart</a>
@@ -63,6 +67,10 @@
                                 </a>
                                 <span class="pink" th:text="${newGoods.tag}">-10%</span>
                                 <div class="product-action">
+                                    <div class="pro-same-action pro-quickview">
+                                        <a title="Quick View" th:href="@{'/goods/detail/'+${newGoods.goodsId}}"
+                                           data-target="#exampleModal"><i class="pe-7s-look"></i></a>
+                                    </div>
                                     <div class="pro-same-action pro-cart">
                                         <a title="Add To Cart" href="/login"  th:if="${session.newBeeMallUser==null}" ><i class="pe-7s-cart"></i> Add to cart</a>
                                         <a title="Add To Cart"   th:if="${session.newBeeMallUser!=null}" th:onclick="'saveToCart('+${newGoods.goodsId}+')'" ><i class="pe-7s-cart"></i> Add to cart</a>
@@ -103,6 +111,10 @@
                                 </a>
                                 <span class="pink" th:text="${recommendGoods.tag}">-10%</span>
                                 <div class="product-action">
+                                    <div class="pro-same-action pro-quickview">
+                                        <a title="Quick View" th:href="@{'/goods/detail/'+${recommendGoods.goodsId}}"
+                                           data-target="#exampleModal"><i class="pe-7s-look"></i></a>
+                                    </div>
                                     <div class="pro-same-action pro-cart">
                                         <a title="Add To Cart" href="/login"  th:if="${session.newBeeMallUser==null}" ><i class="pe-7s-cart"></i> Add to cart</a>
                                         <a title="Add To Cart"   th:if="${session.newBeeMallUser!=null}" th:onclick="'saveToCart('+${recommendGoods.goodsId}+')'" ><i class="pe-7s-cart"></i> Add to cart</a>
