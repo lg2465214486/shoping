@@ -132,12 +132,15 @@
                         <div class="pro-pagination-style text-center mt-30"
                              th:unless="${#lists.isEmpty(orderPageResult.list)}">
                             <ul>
+                                <li><a class="prev" th:if="${orderPageResult.currPage>1}" th:href="@{'/orders?page=' + ${orderPageResult.currPage-1}}"><i class="fa fa-angle-double-left"></i></a></li>
                                 <li>
                                     <th:block th:if="${orderPageResult.currPage-2 >=1}"><a
                                             th:href="@{'/orders?page=' + ${orderPageResult.currPage-2}}"
                                             th:text="${orderPageResult.currPage -2}">1</a>
                                     </th:block>
                                 </li>
+
+
                                 <li>
                                     <th:block th:if="${orderPageResult.currPage-1 >=1}"><a
                                             th:href="@{'/orders?page=' + ${orderPageResult.currPage-1}}"
@@ -159,6 +162,9 @@
                                             th:href="@{'/orders?page=' + ${orderPageResult.currPage+2}}"
                                             th:text="${orderPageResult.currPage +2}">1</a></th:block>
                                 </li>
+                                <li><a class="prev" th:if="${orderPageResult.currPage<orderPageResult.totalPage}"
+                                       th:href="@{'/orders?page=' + ${orderPageResult.currPage+1}}"><i class="fa fa-angle-double-right"></i></a></li>
+
                             </ul>
                         </div>
                     </div>
