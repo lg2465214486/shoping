@@ -224,7 +224,7 @@
                         data: JSON.stringify(data),
                         success: function (result) {
                             if (result.resultCode == 200) {
-                                window.location.reload();
+                                window.location.href = '/orders';
                             } else {
                                 Swal.fire({
                                     text: result.message,

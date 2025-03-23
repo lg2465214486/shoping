@@ -43,7 +43,7 @@ public class ShoppingCartController {
                                HttpSession httpSession) {
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
         int itemsTotal = 0;
-        int priceTotal = 0;
+        double priceTotal = 0;
 
         List<NewBeeMallShoppingCartItemVO> myShoppingCartItems = newBeeMallShoppingCartService.getMyShoppingCartItems(user.getUserId());
         if (!CollectionUtils.isEmpty(myShoppingCartItems)) {

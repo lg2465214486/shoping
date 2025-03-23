@@ -6,15 +6,6 @@
 <body>
 <header th:replace="mall/header::header-fragment"></header>
 
-<link rel="stylesheet" th:href="@{/mall/css/swiper-bundle.min.css}">
-<link rel="stylesheet" th:href="@{mall/css/iconfont.css}">
-<link rel="stylesheet" th:href="@{mall/css/common.css}">
-<link rel="stylesheet" th:href="@{mall/styles/header.css}">
-<link rel="stylesheet" th:href="@{mall/styles/cart.css}">
-<link rel="stylesheet" th:href="@{mall/styles/my-orders.css}">
-<link rel="stylesheet" th:href="@{mall/styles/personal.css.css}">
-<link rel="stylesheet" th:href="@{/admin/plugins/sweetalert2/sweetalert2.min.css}"/>
-
 <div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
     <div class="container">
         <div class="breadcrumb-content text-center">
@@ -90,7 +81,7 @@
                                     <!--                                    <p th:text="${'GoodsCount:'+order.newBeeMallOrderItemVOS.count}"></p>-->
                                 </td>
                                 <td class="product-price-cart"><span class="amount"
-                                                                     th:text="${order.totalPrice+'.00 $'}">$260.00</span>
+                                                                     th:text="${order.totalPrice+' $'}">$260.00</span>
                                 </td>
                                 <td class="product-quantity">
                                     <th:block th:if="${order.orderStatus==0}">
@@ -123,7 +114,7 @@
                                     <a href="/">Continue Shopping</a>
                                 </div>
                                 <div class="cart-clear">
-                                    <button href="/shop-cart">Update Shopping Cart</button>
+                                    <a href="/orders">Update Shopping Order</a>
                                 </div>
                             </div>
                         </div>
