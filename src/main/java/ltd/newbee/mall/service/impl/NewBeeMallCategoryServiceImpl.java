@@ -157,7 +157,7 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
                 return searchPageCategoryVO;
             }
         }
-        return null;
+        return searchPageCategoryVO;
     }
 
     @Override

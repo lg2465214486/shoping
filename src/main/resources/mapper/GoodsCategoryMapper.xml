@@ -60,6 +60,10 @@
         where category_name = #{categoryName,jdbcType=VARCHAR} and category_level = #{categoryLevel,jdbcType=TINYINT}
         and is_deleted = 0 limit 1
     </select>
+    <select id="selectByParentId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_category where parent_id=#{id}
+    </select>
     <select id="selectByLevelAndParentIdsAndNumber" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

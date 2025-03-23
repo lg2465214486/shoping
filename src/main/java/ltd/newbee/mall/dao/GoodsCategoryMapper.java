@@ -11,6 +11,7 @@ package ltd.newbee.mall.dao;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -34,6 +35,8 @@ public interface GoodsCategoryMapper {
     int getTotalGoodsCategories(PageQueryUtil pageUtil);
 
     int deleteBatch(Integer[] ids);
+
+    List<GoodsCategory> selectByParentId(Long id);
 
     List<GoodsCategory> selectByLevelAndParentIdsAndNumber(@Param("parentIds") List<Long> parentIds, @Param("categoryLevel") int categoryLevel, @Param("number") int number);
 }

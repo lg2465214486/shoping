@@ -45,7 +45,7 @@
                     <nav>
                         <ul>
                             <li><a href="/">Home</a></li>
-                            <li><a href="shop.html">Shop</a></li>
+                            <li><a href="/search.html">Shop</a></li>
                             <li><a href="/orders">Order</a></li>
                         </ul>
                     </nav>
@@ -54,13 +54,21 @@
             <div class="col-xl-2 col-lg-2 col-md-6 col-8">
                 <div class="header-right-wrap">
                     <div class="same-style header-search">
-                        <a class="search-active" href="#"><i class="pe-7s-search"></i></a>
-                        <div class="search-content">
-                            <form action="#">
-                                <input type="text" placeholder="Search"/>
-                                <button class="button-search"><i class="pe-7s-search"></i></button>
-                            </form>
+                        <a class="search-active"><i class="pe-7s-search"></i></a>
+                        <div class="search-content pro-sidebar-search mb-50 mt-25" style="z-index: 1000">
+                            <div class="pro-sidebar-search-form">
+                                <input id="keyword1" type="text" placeholder="Search here...">
+                                <button onclick="searchKeyWord1()">
+                                    <i class="pe-7s-search"></i>
+                                </button>
+                            </div>
                         </div>
+                        <script>
+                            function searchKeyWord1(){
+                                console.log(document.getElementById("keyword1").value)
+                                window.location.href = "/search?keyword="+document.getElementById("keyword1").value
+                            }
+                        </script>
                     </div>
                     <div class="same-style account-satting">
                         <a class="account-satting-active" href="#"><i class="pe-7s-user-female"></i>
@@ -93,7 +101,7 @@
                 <nav id="mobile-menu-active">
                     <ul class="menu-overflow">
                         <li><a href="/">Home</a></li>
-                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="/search.html">Shop</a></li>
                         <li><a href="/orders">Order</a></li>
                     </ul>
                 </nav>
