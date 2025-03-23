@@ -39,7 +39,7 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
         NewBeeMallShoppingCartItem temp = newBeeMallShoppingCartItemMapper.selectByUserIdAndGoodsId(newBeeMallShoppingCartItem.getUserId(), newBeeMallShoppingCartItem.getGoodsId());
         if (temp != null) {
             //已存在则修改该记录
-            temp.setGoodsCount(newBeeMallShoppingCartItem.getGoodsCount());
+            temp.setGoodsCount(temp.getGoodsCount()+newBeeMallShoppingCartItem.getGoodsCount());
             return updateNewBeeMallCartItem(temp);
         }
         NewBeeMallGoods newBeeMallGoods = newBeeMallGoodsMapper.selectByPrimaryKey(newBeeMallShoppingCartItem.getGoodsId());

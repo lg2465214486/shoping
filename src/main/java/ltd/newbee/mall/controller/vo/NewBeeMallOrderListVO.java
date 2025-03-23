@@ -25,6 +25,8 @@ public class NewBeeMallOrderListVO implements Serializable {
 
     private Byte payType;
 
+    private Integer takeType;
+
     private Byte orderStatus;
 
     private String orderStatusString;
@@ -106,4 +108,13 @@ public class NewBeeMallOrderListVO implements Serializable {
     public void setNewBeeMallOrderItemVOS(List<NewBeeMallOrderItemVO> newBeeMallOrderItemVOS) {
         this.newBeeMallOrderItemVOS = newBeeMallOrderItemVOS;
     }
+
+    public Integer getTakeType() {
+        return takeType;
+    }
+
+    public void setTakeType(Integer takeType) {
+        this.takeType = takeType;
+    }
 }
+
