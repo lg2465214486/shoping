@@ -1,0 +1,201 @@
+﻿<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head th:replace="mall/header::head-fragment('shopping','index')">
+
+<body>
+<header th:replace="mall/header::header-fragment"></header>
+
+<div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="active">Shop</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="shop-area pt-95 pb-100">
+    <div class="container">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-9">
+                <div class="shop-top-bar">
+                    <div class="select-shoing-wrap">
+                        <p>Showing 1–12 of 20 result</p>
+                    </div>
+                </div>
+
+
+                <div class="shop-bottom-area mt-35">
+                    <div class="tab-content jump">
+                        <div id="shop-1" class="tab-pane active">
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6 col-lg-6 col-sm-6" th:each="goods : ${pageResult.list}">
+                                    <div class="product-wrap mb-25 scroll-zoom">
+                                        <div class="product-img">
+                                            <a th:href="@{'/goods/detail/'+${goods.goodsId}}">
+                                                <img class="default-img" th:src="@{${goods.goodsCoverImg}}"
+                                                     th:alt="${goods.goodsName}">
+                                                <img class="hover-img" th:src="@{${goods.goodsCoverImg}}"
+                                                     th:alt="${goods.goodsName}">
+                                            </a>
+                                            <span class="pink" th:text="${goods.tag}">-10%</span>
+                                            <div class="product-action">
+                                                <div class="pro-same-action pro-wishlist">
+                                                    <a title="Wishlist" th:href="@{'/goods/detail/'+${goods.goodsId}}"><i class="pe-7s-look"></i></a>
+                                                </div>
+                                                <div class="pro-same-action pro-cart">
+                                                    <a title="Add To Cart" href="/login"  th:if="${session.newBeeMallUser==null}" ><i class="pe-7s-cart"></i> Add to cart</a>
+                                                    <a title="Add To Cart"   th:if="${session.newBeeMallUser!=null}" th:onclick="'saveToCart('+${goods.goodsId}+')'" ><i class="pe-7s-cart"></i> Add to cart</a>
+                                                </div>
+                                                <div class="pro-same-action pro-quickview">
+                                                    <a title="Quick View" th:href="@{'/goods/detail/'+${goods.goodsId}}"
+                                                       data-target="#exampleModal"><i class="pe-7s-look"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-content text-center">
+                                            <h3><a th:href="@{'/goods/detail/'+${goods.goodsId}}"
+                                                   th:text="${goods.goodsName}"></a></h3>
+                                            <div class="product-rating">
+                                                <!--                                                    <i class="fa fa-star-o yellow"></i>-->
+                                                <!--                                                    <i class="fa fa-star-o yellow"></i>-->
+                                                <!--                                                    <i class="fa fa-star-o yellow"></i>-->
+                                                <!--                                                    <i class="fa fa-star-o"></i>-->
+                                                <!--                                                    <i class="fa fa-star-o"></i>-->
+                                            </div>
+                                            <div class="product-price">
+                                                <span th:text="'$ '+${goods.sellingPrice}"></span>
+                                                <span class="old" th:text="'$ '+${goods.originalPrice}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pro-pagination-style text-center mt-30">
+                        <ul>
+                            <li><a class="prev" th:href="'/search?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage-1 < 1?1:pageResult.currPage-1}+'&goodsCategoryId='+${goodsCategoryId==null?'':goodsCategoryId}"><i class="fa fa-angle-double-left"></i></a></li>
+                            <li th:each="page,numStat : ${#numbers.sequence(1,pageResult.totalPage)}">
+                                <th:block th:if="${page > 0}">
+                                <a th:class="${page == pageResult.currPage ? 'active':''}" th:text="${page}" th:href="'/search?keyword='+${keyword==null?'':keyword}+'&page=' + ${page}+'&goodsCategoryId='+${goodsCategoryId==null?'':goodsCategoryId}">1</a>
+                                </th:block>
+                            </li>
+                            <li><a class="next" th:href="'/search?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage+1 > pageResult.totalPage?1:pageResult.currPage+1}+'&goodsCategoryId='+${goodsCategoryId==null?'':goodsCategoryId}"><i class="fa fa-angle-double-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="sidebar-style mr-30">
+                    <div class="sidebar-widget">
+                        <h4 class="pro-sidebar-title">Search </h4>
+                        <div class="pro-sidebar-search mb-50 mt-25">
+                            <div class="pro-sidebar-search-form">
+                                <input id="keyword" type="text" th:value="${keyword}" placeholder="Search here...">
+                                <button onclick="searchKeyWord()">
+                                    <i class="pe-7s-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-widget">
+                        <h4 class="pro-sidebar-title">CateGory </h4>
+                        <div class="sidebar-widget-list mt-30">
+                            <ul>
+                                <li th:each="category : ${goodsCategory}">
+                                    <div class="sidebar-widget-list-left">
+                                        <a th:href="'/search?goodsCategoryId='+${category.categoryId}" th:text="${category.categoryName}"
+                                           th:style="${category.categoryId== goodsCategoryId? 'color: #a749ff;': ''}">On Sale</a>
+<!--                                        <span class="checkmark"></span>-->
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal end -->
+<script th:src="@{/admin/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
+<script th:src="@{/mall/js/search.js}" type="text/javascript"></script>
+<script>
+    function searchKeyWord(){
+        window.location.href = "/search?keyword="+$("#keyword").val()
+    }
+
+    /**
+     * 添加到购物车
+     */
+    function saveToCart(id) {
+        var goodsCount = 1;
+        const regex = /^[0-9]*$/;
+        if(!regex.test(goodsCount) || goodsCount == ''){
+            alert("goods number error")
+            return;
+        }
+        var data = {
+            "goodsId": id,
+            "goodsCount": goodsCount
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/shop-cart',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.resultCode == 200) {
+                    Swal.fire({
+                        title: "Success",
+                        text: "Add Cart Success",
+                        icon: "success",iconColor:"#1d953f",
+                        showCancelButton: true,
+                        confirmButtonText: 'OK',
+                        cancelButtonText: 'Cancel'
+                    }).then((flag) => {
+                            window.location.reload();
+                        }
+                    );
+                } else {
+                    Swal.fire({
+                        text: result.message,
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    text: "操作失败",
+                    icon: "error",iconColor:"#f05b72",
+                });
+            }
+        });
+    }
+</script>
+
+<!-- JS
+============================================ -->
+
+<!-- jQuery JS -->
+<script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+<!-- Popper JS -->
+<script src="assets/js/popper.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="assets/js/bootstrap.min.js"></script>
+<!-- Plugins JS -->
+<script src="assets/js/plugins.js"></script>
+<!-- Ajax Mail -->
+<script src="assets/js/ajax-mail.js"></script>
+<!-- Main JS -->
+<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

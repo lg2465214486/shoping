@@ -13,11 +13,15 @@ import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallGoodsDetailVO;
 import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
+import ltd.newbee.mall.dao.GoodsCategoryMapper;
+import ltd.newbee.mall.dao.NewBeeMallOrderMapper;
+import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -36,6 +41,8 @@ public class GoodsController {
     private NewBeeMallGoodsService newBeeMallGoodsService;
     @Resource
     private NewBeeMallCategoryService newBeeMallCategoryService;
+    @Autowired
+    private GoodsCategoryMapper goodsCategoryMapper;
 
     @GetMapping({"/search", "/search.html"})
     public String searchPage(@RequestParam Map<String, Object> params, HttpServletRequest request) {
@@ -46,12 +53,14 @@ public class GoodsController {
         //封装分类数据
         if (params.containsKey("goodsCategoryId") && StringUtils.hasText(params.get("goodsCategoryId") + "")) {
             Long categoryId = Long.valueOf(params.get("goodsCategoryId") + "");
+            request.setAttribute("goodsCategoryId", categoryId);
             SearchPageCategoryVO searchPageCategoryVO = newBeeMallCategoryService.getCategoriesForSearch(categoryId);
             if (searchPageCategoryVO != null) {
-                request.setAttribute("goodsCategoryId", categoryId);
                 request.setAttribute("searchPageCategoryVO", searchPageCategoryVO);
             }
         }
+        List<GoodsCategory> goodsCategory = goodsCategoryMapper.selectByParentId(0L);
+        request.setAttribute("goodsCategory", goodsCategory);
         //封装参数供前端回显
         if (params.containsKey("orderBy") && StringUtils.hasText(params.get("orderBy") + "")) {
             request.setAttribute("orderBy", params.get("orderBy") + "");
@@ -68,7 +77,7 @@ public class GoodsController {
         //封装商品数据
         PageQueryUtil pageUtil = new PageQueryUtil(params);
         request.setAttribute("pageResult", newBeeMallGoodsService.searchNewBeeMallGoods(pageUtil));
-        return "mall/search";
+        return "mall/search1";
     }
 
     @GetMapping("/goods/detail/{goodsId}")

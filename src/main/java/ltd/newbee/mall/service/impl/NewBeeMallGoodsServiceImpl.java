@@ -131,7 +131,7 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
                 }
             }
         }
-        PageResult pageResult = new PageResult(newBeeMallSearchGoodsVOS, total, pageUtil.getLimit(), pageUtil.getPage());
+        PageResult pageResult = new PageResult(goodsList, total, pageUtil.getLimit(), pageUtil.getPage());
         return pageResult;
     }
 }
