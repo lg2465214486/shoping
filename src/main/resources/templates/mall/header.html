@@ -68,7 +68,7 @@
                         <div class="account-dropdown">
                             <ul>
                                 <li><a href="/login" th:if="${session.newBeeMallUser==null}">Login/Register</a></li>
-                                <li th:if="${session.newBeeMallUser!=null}"><a href="/order" >Order</a></li>
+                                <li th:if="${session.newBeeMallUser!=null}"><a href="/orders" >Order</a></li>
                                 <li th:if="${session.newBeeMallUser!=null}"><a href="/logout" >Log Out</a></li>
                             </ul>
                         </div>
@@ -92,9 +92,9 @@
             <div class="mobile-menu">
                 <nav id="mobile-menu-active">
                     <ul class="menu-overflow">
-                        <li><a href="shop.html">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><a href="shop.html">Shop</a></li>
-                        <li><a href="shop.html">Order</a></li>
+                        <li><a href="/orders">Order</a></li>
                     </ul>
                 </nav>
             </div>
