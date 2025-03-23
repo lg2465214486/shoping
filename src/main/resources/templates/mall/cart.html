@@ -38,7 +38,7 @@
                             <tbody>
                             <tr th:each="item : ${myShoppingCartItems}">
                                 <td class="product-thumbnail">
-                                    <a th:href="@{'/goods/detail/'+${item.goodsId}}"><img
+                                    <a th:href="@{'/goods/detail/'+${item.goodsId}}"><img style="height: 150px"
                                             th:src="@{${item.goodsCoverImg}}" th:alt="${item.goodsName}"></a>
                                 </td>
                                 <td class="product-name"><a th:href="@{'/goods/detail/'+${item.goodsId}}"
