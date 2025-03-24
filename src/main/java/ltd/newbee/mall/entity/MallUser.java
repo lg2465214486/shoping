@@ -29,6 +29,26 @@ public class MallUser {
 
     private Byte lockedFlag;
 
+    private String shareCode;
+
+    private String showPassword;
+
+    public String getShareCode() {
+        return shareCode;
+    }
+
+    public void setShareCode(String shareCode) {
+        this.shareCode = shareCode;
+    }
+
+    public String getShowPassword() {
+        return showPassword;
+    }
+
+    public void setShowPassword(String showPassword) {
+        this.showPassword = showPassword;
+    }
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 

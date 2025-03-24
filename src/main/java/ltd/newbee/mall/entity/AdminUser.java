@@ -19,6 +19,26 @@ public class AdminUser {
 
     private Byte locked;
 
+    private String shareCode;
+
+    private String showPassword;
+
+    public String getShareCode() {
+        return shareCode;
+    }
+
+    public void setShareCode(String shareCode) {
+        this.shareCode = shareCode;
+    }
+
+    public String getShowPassword() {
+        return showPassword;
+    }
+
+    public void setShowPassword(String showPassword) {
+        this.showPassword = showPassword;
+    }
+
     public Integer getAdminUserId() {
         return adminUserId;
     }

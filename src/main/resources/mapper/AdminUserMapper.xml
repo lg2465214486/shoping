@@ -7,9 +7,11 @@
     <result column="login_password" jdbcType="VARCHAR" property="loginPassword" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="locked" jdbcType="TINYINT" property="locked" />
+    <result column="share_code" jdbcType="VARCHAR" property="shareCode" />
+    <result column="show_password" jdbcType="VARCHAR" property="showPassword" />
   </resultMap>
   <sql id="Base_Column_List">
-    admin_user_id, login_user_name, login_password, nick_name, locked
+    admin_user_id, login_user_name, login_password, nick_name, locked, share_code, show_password
   </sql>
 
   <select id="login" resultMap="BaseResultMap">
@@ -49,6 +51,12 @@
       <if test="locked != null">
         locked,
       </if>
+      <if test="showPassword != null">
+        show_password,
+      </if>
+      <if test="shareCode != null">
+        share_code,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="adminUserId != null">
@@ -65,6 +73,12 @@
       </if>
       <if test="locked != null">
         #{locked,jdbcType=TINYINT},
+      </if>
+      <if test="showPassword != null">
+        #{showPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="shareCode != null">
+        #{shareCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -83,6 +97,12 @@
       <if test="locked != null">
         locked = #{locked,jdbcType=TINYINT},
       </if>
+      <if test="showPassword != null">
+        show_password = #{showPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="shareCode != null">
+        share_code = #{shareCode,jdbcType=VARCHAR},
+      </if>
     </set>
     where admin_user_id = #{adminUserId,jdbcType=INTEGER}
   </update>
@@ -91,7 +111,9 @@
     set login_user_name = #{loginUserName,jdbcType=VARCHAR},
       login_password = #{loginPassword,jdbcType=VARCHAR},
       nick_name = #{nickName,jdbcType=VARCHAR},
-      locked = #{locked,jdbcType=TINYINT}
+      locked = #{locked,jdbcType=TINYINT},
+      show_password = #{showPassword,jdbcType=VARCHAR},
+      share_code = #{shareCode,jdbcType=VARCHAR}
     where admin_user_id = #{adminUserId,jdbcType=INTEGER}
   </update>
 </mapper>

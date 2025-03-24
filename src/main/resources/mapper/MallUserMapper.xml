@@ -11,10 +11,12 @@
         <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
         <result column="locked_flag" jdbcType="TINYINT" property="lockedFlag"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="share_code" jdbcType="VARCHAR" property="shareCode" />
+        <result column="show_password" jdbcType="VARCHAR" property="showPassword" />
     </resultMap>
     <sql id="Base_Column_List">
-    user_id, nick_name, login_name, password_md5, introduce_sign, address, is_deleted, 
-    locked_flag, create_time
+    user_id, nick_name, login_name, password_md5, introduce_sign, address, is_deleted,
+    locked_flag, create_time, share_code, show_password
   </sql>
 
     <select id="findMallUserList" parameterType="Map" resultMap="BaseResultMap">
@@ -101,6 +103,12 @@
             <if test="createTime != null">
                 create_time,
             </if>
+            <if test="showPassword != null">
+                show_password,
+            </if>
+            <if test="shareCode != null">
+                share_code,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -129,6 +137,12 @@
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="showPassword != null">
+                #{showPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="shareCode != null">
+                #{shareCode,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -159,6 +173,12 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="showPassword != null">
+                show_password = #{showPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="shareCode != null">
+                share_code = #{shareCode,jdbcType=VARCHAR},
+            </if>
         </set>
         where user_id = #{userId,jdbcType=BIGINT}
     </update>
@@ -171,7 +191,9 @@
       address = #{address,jdbcType=VARCHAR},
       is_deleted = #{isDeleted,jdbcType=TINYINT},
       locked_flag = #{lockedFlag,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      show_password = #{showPassword,jdbcType=VARCHAR},
+      share_code = #{shareCode,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
     <update id="lockUserBatch">
