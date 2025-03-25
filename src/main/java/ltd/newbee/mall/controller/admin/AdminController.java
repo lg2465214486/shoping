@@ -114,22 +114,23 @@ public class AdminController {
                         @RequestParam("password") String password,
                         @RequestParam("verifyCode") String verifyCode,
                         HttpSession session) {
-        if (!StringUtils.hasText(verifyCode)) {
-            session.setAttribute("errorMsg", "验证码不能为空");
-            return "admin/login";
-        }
+//        if (!StringUtils.hasText(verifyCode)) {
+//            session.setAttribute("errorMsg", "验证码不能为空");
+//            return "admin/login";
+//        }
         if (!StringUtils.hasText(userName) || !StringUtils.hasText(password)) {
             session.setAttribute("errorMsg", "用户名或密码不能为空");
             return "admin/login";
         }
-        ShearCaptcha shearCaptcha = (ShearCaptcha) session.getAttribute("verifyCode");
-        if (shearCaptcha == null || !shearCaptcha.verify(verifyCode)) {
-            session.setAttribute("errorMsg", "验证码错误");
-            return "admin/login";
-        }
+//        ShearCaptcha shearCaptcha = (ShearCaptcha) session.getAttribute("verifyCode");
+//        if (shearCaptcha == null || !shearCaptcha.verify(verifyCode)) {
+//            session.setAttribute("errorMsg", "验证码错误");
+//            return "admin/login";
+//        }
         AdminUser adminUser = adminUserService.login(userName, password);
         if (adminUser != null) {
-            session.setAttribute("loginUser", adminUser.getNickName());
+            session.setAttribute("loginUser", adminUser.getLoginUserName());
+            session.setAttribute("shareCode", adminUser.getShareCode());
             session.setAttribute("loginUserId", adminUser.getAdminUserId());
             //session过期时间设置为7200秒 即两小时
             //session.setMaxInactiveInterval(60 * 60 * 2);

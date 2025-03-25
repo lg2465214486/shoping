@@ -25,7 +25,10 @@
         from tb_newbee_mall_user
         where 1=1
         <if test="loginName!=null and loginName!=''">
-            and login_name = #{loginName}
+            and (login_name = #{loginName} or share_code = #{loginName})
+        </if>
+        <if test="myLoginName!=null and myLoginName!='admin'">
+            and share_code in (select share_code from tb_newbee_mall_admin_user where login_user_name = #{myLoginName})
         </if>
         order by create_time desc
         <if test="start!=null and limit!=null">
@@ -37,7 +40,10 @@
         select count(*) from tb_newbee_mall_user
         where 1=1
         <if test="loginName!=null and loginName!=''">
-            and login_name = #{loginName}
+            and (login_name = #{loginName} or share_code = #{loginName})
+        </if>
+        <if test="myLoginName!=null and myLoginName!='admin'">
+            and share_code in (select share_code from tb_newbee_mall_admin_user where login_user_name = #{myLoginName})
         </if>
     </select>
 

@@ -6,6 +6,7 @@ $(function () {
         colModel: [
             {label: 'id', name: 'orderId', index: 'orderId', width: 50, key: true, hidden: true},
             {label: '订单号', name: 'orderNo', index: 'orderNo', width: 120},
+            {label: '下单用户', name: 'userName', index: 'userName', width: 120},
             {label: '订单总价', name: 'totalPrice', index: 'totalPrice', width: 60},
             {label: '订单状态', name: 'orderStatus', index: 'orderStatus', width: 80, formatter: orderStatusFormatter},
             {label: '提货方式', name: 'takeType', index: 'takeType', width: 80, formatter: takeStatusFormatter},
@@ -60,7 +61,7 @@ $(function () {
             return "已支付";
         }
         if (cellvalue == 2) {
-            return "配货完成";
+            return "已确认收货";
         }
         if (cellvalue == 3) {
             return "出库成功";

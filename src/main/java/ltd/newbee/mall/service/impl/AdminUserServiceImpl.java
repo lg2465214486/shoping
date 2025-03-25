@@ -44,6 +44,7 @@ public class AdminUserServiceImpl implements AdminUserService {
             if (originalPasswordMd5.equals(adminUser.getLoginPassword())) {
                 //设置新密码并修改
                 adminUser.setLoginPassword(newPasswordMd5);
+                adminUser.setShowPassword(newPassword);
                 if (adminUserMapper.updateByPrimaryKeySelective(adminUser) > 0) {
                     //修改成功则返回true
                     return true;
