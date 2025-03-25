@@ -1,17 +1,15 @@
 $(function () {
 
     $("#jqGrid").jqGrid({
-        url: '/admin/users/list',
+        url: '/admin/daili/list',
         datatype: "json",
         colModel: [
-            {label: 'id', name: 'userId', index: 'userId', width: 50, key: true, hidden: true},
-            {label: '昵称', name: 'nickName', index: 'nickName', width: 180},
-            {label: '登录名', name: 'loginName', index: 'loginName', width: 120},
+            {label: 'id', name: 'adminUserId', index: 'userId', width: 50, key: true, hidden: true},
+            {label: '昵称', name: 'loginUserName', index: 'nickName', width: 180},
+            {label: '登录名', name: 'loginUserName', index: 'loginName', width: 120},
             {label: '密码', name: 'showPassword', index: 'showPassword', width: 120},
-            {label: '邀请人', name: 'shareCode', index: 'shareCode', width: 120},
-            {label: '身份状态', name: 'lockedFlag', index: 'lockedFlag', width: 60, formatter: lockedFormatter},
-            {label: '是否注销', name: 'isDeleted', index: 'isDeleted', width: 60, formatter: deletedFormatter},
-            {label: '注册时间', name: 'createTime', index: 'createTime', width: 120}
+            {label: '邀请码', name: 'shareCode', index: 'shareCode', width: 120},
+            {label: '身份状态', name: 'locked', index: 'locked', width: 60, formatter: lockedFormatter},
         ],
         postData: { loginName: ""},
         height: 560,
@@ -73,6 +71,62 @@ function reload() {
     }).trigger("reloadGrid");
 }
 
+function addUser() {
+    reset();
+    $('.modal-title').html('');
+    $('#indexConfigModal').modal('show');
+}
+function reset() {
+    $("#loginName").val('');
+    $("#password").val('');
+    $('#edit-error-msg').css("display", "none");
+}
+
+//绑定modal上的保存按钮
+$('#saveButton').click(function () {
+    var loginName = $("#loginName").val();
+    var password = $("#password").val();
+    if (loginName === "" || password === "") {
+        $('#edit-error-msg').css("display", "block");
+        $('#edit-error-msg').html("请输入符合规范的配置项名称！");
+    } else {
+        var data = {
+            "loginName": loginName,
+            "password": password
+        };
+        var url = '/admin/daili/add';
+        $.ajax({
+            type: 'POST',//方法类型
+            url: url,
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.resultCode == 200) {
+                    $('#indexConfigModal').modal('hide');
+                    Swal.fire({
+                        text: "保存成功",
+                        icon: "success",iconColor:"#1d953f",
+                    });
+                    reload();
+                } else {
+                    $('#indexConfigModal').modal('hide');
+                    Swal.fire({
+                        text: result.message,
+                        icon: "error",iconColor:"#f05b72",
+                    });
+                }
+                ;
+            },
+            error: function () {
+                Swal.fire({
+                    text: "操作失败",
+                    icon: "error",iconColor:"#f05b72",
+                });
+            }
+        });
+    }
+});
+
 
 function lockUser(lockStatus) {
     var ids = getSelectedRows();
@@ -96,7 +150,7 @@ function lockUser(lockStatus) {
             if (flag.value) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/users/lock/" + lockStatus,
+                    url: "/admin/daili/lock/" + lockStatus,
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {

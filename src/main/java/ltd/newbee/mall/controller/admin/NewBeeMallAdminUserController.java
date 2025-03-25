@@ -8,58 +8,48 @@
  */
 package ltd.newbee.mall.controller.admin;
 
-import ltd.newbee.mall.service.NewBeeMallUserService;
+import ltd.newbee.mall.service.NewBeeMallAdminUserService;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-/**
- * @author 13
- * @qq交流群 796794009
- * @email 2449207463@qq.com
- * @link https://github.com/newbee-ltd
- */
 @Controller
 @RequestMapping("/admin")
-public class NewBeeMallUserController {
+public class NewBeeMallAdminUserController {
 
     @Resource
-    private NewBeeMallUserService newBeeMallUserService;
+    private NewBeeMallAdminUserService newBeeMallAdminUserService;
 
-    @GetMapping("/users")
+    @GetMapping("/daili")
     public String usersPage(HttpServletRequest request) {
-        request.setAttribute("path", "users");
-        return "admin/newbee_mall_user";
+        request.setAttribute("path", "daili");
+        return "admin/newbee_mall_admin_user";
     }
 
     /**
      * 列表
      */
-    @RequestMapping(value = "/users/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/daili/list", method = RequestMethod.GET)
     @ResponseBody
-    public Result list(@RequestParam Map<String, Object> params, HttpSession session) {
+    public Result list(@RequestParam Map<String, Object> params) {
         if (ObjectUtils.isEmpty(params.get("page")) || ObjectUtils.isEmpty(params.get("limit"))) {
             return ResultGenerator.genFailResult("参数异常！");
         }
-        String myLoginName = (String) session.getAttribute("loginUser");
-        params.put("myLoginName", myLoginName);
         PageQueryUtil pageUtil = new PageQueryUtil(params);
-        return ResultGenerator.genSuccessResult(newBeeMallUserService.getNewBeeMallUsersPage(pageUtil));
+        return ResultGenerator.genSuccessResult(newBeeMallAdminUserService.getNewBeeMallUsersPage(pageUtil));
     }
 
     /**
      * 用户禁用与解除禁用(0-未锁定 1-已锁定)
      */
-    @RequestMapping(value = "/users/lock/{lockStatus}", method = RequestMethod.POST)
+    @RequestMapping(value = "/daili/lock/{lockStatus}", method = RequestMethod.POST)
     @ResponseBody
     public Result delete(@RequestBody Integer[] ids, @PathVariable int lockStatus) {
         if (ids.length < 1) {
@@ -68,10 +58,20 @@ public class NewBeeMallUserController {
         if (lockStatus != 0 && lockStatus != 1) {
             return ResultGenerator.genFailResult("操作非法！");
         }
-        if (newBeeMallUserService.lockUsers(ids, lockStatus)) {
+        if (newBeeMallAdminUserService.lockUsers(ids, lockStatus)) {
             return ResultGenerator.genSuccessResult();
         } else {
             return ResultGenerator.genFailResult("禁用失败");
         }
+    }
+
+    /**
+     * 新增
+     */
+    @RequestMapping(value = "/daili/add", method = RequestMethod.POST)
+    @ResponseBody
+    public Result add(@RequestBody Map<String, Object> params) {
+        newBeeMallAdminUserService.register((String) params.get("loginName"), (String) params.get("password"));
+        return ResultGenerator.genSuccessResult();
     }
 }

@@ -10,15 +10,11 @@ package ltd.newbee.mall.service.impl;
 
 import ltd.newbee.mall.common.*;
 import ltd.newbee.mall.controller.vo.*;
-import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
-import ltd.newbee.mall.dao.NewBeeMallOrderItemMapper;
-import ltd.newbee.mall.dao.NewBeeMallOrderMapper;
-import ltd.newbee.mall.dao.NewBeeMallShoppingCartItemMapper;
-import ltd.newbee.mall.entity.NewBeeMallGoods;
-import ltd.newbee.mall.entity.NewBeeMallOrder;
-import ltd.newbee.mall.entity.NewBeeMallOrderItem;
-import ltd.newbee.mall.entity.StockNumDTO;
+import ltd.newbee.mall.dao.*;
+import ltd.newbee.mall.entity.*;
+import ltd.newbee.mall.service.NewBeeMallAdminUserService;
 import ltd.newbee.mall.service.NewBeeMallOrderService;
+import ltd.newbee.mall.service.NewBeeMallUserService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.NumberUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -46,10 +42,16 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
     private NewBeeMallShoppingCartItemMapper newBeeMallShoppingCartItemMapper;
     @Autowired
     private NewBeeMallGoodsMapper newBeeMallGoodsMapper;
+    @Autowired
+    private MallUserMapper mallUserMapper;
 
     @Override
     public PageResult getNewBeeMallOrdersPage(PageQueryUtil pageUtil) {
         List<NewBeeMallOrder> newBeeMallOrders = newBeeMallOrderMapper.findNewBeeMallOrderList(pageUtil);
+        for (NewBeeMallOrder newBeeMallOrder : newBeeMallOrders) {
+            MallUser mallUser = mallUserMapper.selectByPrimaryKey(newBeeMallOrder.getUserId());
+            newBeeMallOrder.setUserName(mallUser.getLoginName());
+        }
         int total = newBeeMallOrderMapper.getTotalNewBeeMallOrders(pageUtil);
         PageResult pageResult = new PageResult(newBeeMallOrders, total, pageUtil.getLimit(), pageUtil.getPage());
         return pageResult;

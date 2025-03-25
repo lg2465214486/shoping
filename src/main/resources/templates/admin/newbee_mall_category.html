@@ -33,6 +33,7 @@
                     </div> <!-- /.card-body -->
                     <div class="card-body">
                         <div class="grid-btn">
+                            <th:block th:if="${session.loginUser == 'admin'}">
                             <button class="btn btn-info" onclick="categoryAdd()"><i
                                     class="fa fa-plus"></i>&nbsp;新增
                             </button>
@@ -42,6 +43,7 @@
                             <button class="btn btn-danger" onclick="deleteCagegory()"><i
                                     class="fa fa-trash-o"></i>&nbsp;删除
                             </button>
+                            </th:block>
 <!--                            <button class="btn btn-info" onclick="categoryManage()"><i-->
 <!--                                    class="fa fa-list"></i>&nbsp;下级分类管理-->
 <!--                            </button>-->

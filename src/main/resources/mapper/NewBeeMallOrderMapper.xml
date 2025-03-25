@@ -47,6 +47,10 @@
         <include refid="Base_Column_List"/>
         from tb_newbee_mall_order
         <where>
+            <if test="myLoginName!=null and myLoginName!='admin'">
+                and user_id in (select t1.user_id from tb_newbee_mall_user as t1 where t1.share_code in (
+                select share_code from tb_newbee_mall_admin_user where login_user_name = #{myLoginName}))
+            </if>
             <if test="orderNo!=null and orderNo!=''">
                 and order_no = #{orderNo}
             </if>
@@ -125,6 +129,10 @@
     <select id="getTotalNewBeeMallOrders" parameterType="Map" resultType="int">
         select count(*) from tb_newbee_mall_order
         <where>
+            <if test="myLoginName!=null and myLoginName!='admin'">
+                and user_id in (select t1.user_id from tb_newbee_mall_user as t1 where t1.share_code in (
+                select share_code from tb_newbee_mall_admin_user where login_user_name = #{myLoginName}))
+            </if>
             <if test="orderNo!=null and orderNo!=''">
                 and order_no = #{orderNo}
             </if>

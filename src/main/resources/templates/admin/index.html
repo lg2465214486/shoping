@@ -23,12 +23,21 @@
                 </div> <!-- /.card-body -->
                 <div class="card-body">
                     <div class="panel panel-default">
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-user-o mr-2"></i> 登录名
+                            <span class="float-right text-muted text-sm" th:text="${session.loginUser}"></span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-user-secret mr-2"></i> 邀请码
+                            <span class="float-right text-muted text-sm" th:text="${session.shareCode}"></span>
+                        </a>
                         <div style="padding: 10px 0 20px 10px;">
                             <!-- usdt -->
                             USDT：<input type="text" class="form-control col-sm-6" id="usdtAddress" name="usdtAddress"
                                    placeholder="*请输入USDT地址(必填)"
                                    th:value="${usdtConfig!=null and usdtConfig.configName!=null }?${usdtConfig.configName}: ''"
-                                   required="true">
+                                   required="true" th:disabled="${session.loginUser == 'admin'? false:true}">
                             <br>
                             <div class="form-group">
                                 <div class="col-sm-4">
@@ -43,6 +52,7 @@
                                 </div>
                             </div>
                             <br>
+                            <th:block th:if="${session.loginUser == 'admin'}">
                             <div class="form-group">
                                 <div class="col-sm-4">
                                     <button class="btn btn-info" style="margin-bottom: 5px;"
@@ -51,12 +61,13 @@
                                     </button>
                                 </div>
                             </div>
+                            </th:block>
                             &nbsp;
                             <!-- 银行卡 -->
                             银行卡：<input type="text" class="form-control col-sm-6" id="bankCard" name="bankCard"
                                    placeholder="*请输入银行卡地址(必填)"
                                    th:value="${bankConfig!=null and bankConfig.configName!=null }?${bankConfig.configName}: ''"
-                                   required="true">
+                                   required="true" th:disabled="${session.loginUser == 'admin'? false:true}">
                             <br>
                             <div class="form-group">
                                 <div class="col-sm-4">
@@ -71,6 +82,7 @@
                                 </div>
                             </div>
                             <br>
+                            <th:block th:if="${session.loginUser == 'admin'}">
                             <div class="form-group">
                                 <div class="col-sm-4">
                                     <button class="btn btn-info" style="margin-bottom: 5px;"
@@ -79,9 +91,12 @@
                                     </button>
                                 </div>
                             </div>
+                            </th:block>
                         </div>
+                        <<th:block th:if="${session.loginUser == 'admin'}">
                         <button class="btn btn-info float-right" style="margin-left: 5px;"
                                 id="saveBtn">保存</button>
+                        </th:block>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->

@@ -9,7 +9,11 @@
 package ltd.newbee.mall.dao;
 
 import ltd.newbee.mall.entity.AdminUser;
+import ltd.newbee.mall.entity.MallUser;
+import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface AdminUserMapper {
     int insert(AdminUser record);
@@ -32,4 +36,14 @@ public interface AdminUserMapper {
     int updateByPrimaryKeySelective(AdminUser record);
 
     int updateByPrimaryKey(AdminUser record);
+
+    List<AdminUser> findAdminUserList(PageQueryUtil pageUtil);
+
+    int getTotalAdminUsers(PageQueryUtil pageUtil);
+
+    int lockUserBatch(@Param("ids") Integer[] ids, @Param("lockStatus") int lockStatus);
+
+    AdminUser selectByLoginName(String loginName);
+
+    int selectByShareCode(String shareCode);
 }
