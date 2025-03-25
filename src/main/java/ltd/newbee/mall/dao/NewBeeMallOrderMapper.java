@@ -31,6 +31,8 @@ public interface NewBeeMallOrderMapper {
 
     List<NewBeeMallOrder> findNewBeeMallOrderList(PageQueryUtil pageUtil);
 
+    List<NewBeeMallOrder> findNewBeeMallOrderList2(PageQueryUtil pageUtil);
+
     int getTotalNewBeeMallOrders(PageQueryUtil pageUtil);
 
     List<NewBeeMallOrder> selectByPrimaryKeys(@Param("orderIds") List<Long> orderIds);
