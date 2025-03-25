@@ -76,7 +76,7 @@
                                         <p>Delivery method：Self pickup</p>
                                     </th:block>
 
-                                    <p th:text="'addressInfo: '+${order.userAddress}"></p>
+                                    <p th:text="'AddressInfo: '+${order.userAddress}"></p>
                                     <!--                                    <p th:text="${order.totalPrice+'.00'}"></p>-->
                                     <!--                                    <p th:text="${'GoodsCount:'+order.newBeeMallOrderItemVOS.count}"></p>-->
                                 </td>
@@ -102,7 +102,7 @@
                                 </td>
                                 <td class="product-subtotal">
                                     <div class="cart-shiping-update" style="border: 1px solid #595959;width: 80%;" th:data-order-no="${order.orderNo}"  th:if="${order.orderStatus == 1}"  onclick="updateOrder(this)" >
-                                        <a >confirm the receipt of goods</a>
+                                        <a >Received Goods</a>
                                     </div>
                                 </td>
                             </tr>
@@ -195,27 +195,37 @@
         var orderNo = eve.getAttribute("data-order-no");
         console.log(orderNo);
 
-        $.ajax({
-            type: 'PUT',
-            url: '/orders/' + orderNo + '/finish',
-            success: function (result) {
-                if (result.resultCode == 200) {
-                    alert("Confirmation of success")
-                    window.location.reload();
-                } else {
-                    Swal.fire({
-                        text: result.message,
-                        icon: "error", iconColor: "#f05b72",
+        Swal.fire({
+            title: "Orders",
+            text: "Confirm Receipt?",
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel'
+        }).then((flag) => {
+                if (flag.value) {
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/orders/' + orderNo + '/finish',
+                        success: function (result) {
+                            if (result.resultCode == 200) {
+                                window.location.reload();
+                            } else {
+                                Swal.fire({
+                                    text: result.message,
+                                    icon: "error", iconColor: "#f05b72",
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                text: "操作失败",
+                                icon: "error", iconColor: "#f05b72",
+                            });
+                        }
                     });
                 }
-            },
-            error: function () {
-                Swal.fire({
-                    text: "操作失败",
-                    icon: "error", iconColor: "#f05b72",
-                });
             }
-        });
+        );
     }
 </script>
 
