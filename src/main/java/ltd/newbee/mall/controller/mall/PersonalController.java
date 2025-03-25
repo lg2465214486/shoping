@@ -12,7 +12,10 @@ import cn.hutool.captcha.ShearCaptcha;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
+import ltd.newbee.mall.dao.AdminUserMapper;
+import ltd.newbee.mall.entity.AdminUser;
 import ltd.newbee.mall.entity.MallUser;
+import ltd.newbee.mall.service.AdminUserService;
 import ltd.newbee.mall.service.NewBeeMallUserService;
 import ltd.newbee.mall.util.MD5Util;
 import ltd.newbee.mall.util.Result;
@@ -30,6 +33,9 @@ public class PersonalController {
 
     @Resource
     private NewBeeMallUserService newBeeMallUserService;
+
+    @Resource
+    private AdminUserMapper adminUserMapper;
 
     @GetMapping("/personal")
     public String personalPage(HttpServletRequest request,
@@ -95,6 +101,7 @@ public class PersonalController {
     public Result register(@RequestParam("loginName") String loginName,
                            @RequestParam("verifyCode") String verifyCode,
                            @RequestParam("password") String password,
+                           @RequestParam("inviteCode") String inviteCode,
                            HttpSession httpSession) {
         if (!StringUtils.hasText(loginName)) {
             return ResultGenerator.genFailResult(ServiceResultEnum.LOGIN_NAME_NULL.getResult());
@@ -109,7 +116,13 @@ public class PersonalController {
         if (shearCaptcha == null || !shearCaptcha.verify(verifyCode)) {
             return ResultGenerator.genFailResult(ServiceResultEnum.LOGIN_VERIFY_CODE_ERROR.getResult());
         }
-        String registerResult = newBeeMallUserService.register(loginName, password);
+
+        AdminUser adminUser = adminUserMapper.selectByInviteCode(inviteCode);
+        if (adminUser == null) {
+            return ResultGenerator.genFailResult("invite code error");
+        }
+
+        String registerResult = newBeeMallUserService.register(loginName, password,inviteCode);
         //注册成功
         if (ServiceResultEnum.SUCCESS.getResult().equals(registerResult)) {
             //删除session中的verifyCode

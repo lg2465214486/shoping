@@ -33,7 +33,7 @@
                                 <th>Order Info</th>
                                 <th>SUM Price</th>
                                 <th>Order State</th>
-<!--                                <th>Order Button</th>-->
+                                <th>Order Button</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -72,11 +72,11 @@
                                     <th:block th:if="${order.takeType==1}">
                                         <p>Delivery method：delivery</p>
                                     </th:block>
-                                    <th:block th:if="${order.takeType==2}">
+                                    <th:block th:if="${order.takeType==0}">
                                         <p>Delivery method：Self pickup</p>
                                     </th:block>
 
-                                    <p th:text="'address: '+${order.userAddress}"></p>
+                                    <p th:text="'addressInfo: '+${order.userAddress}"></p>
                                     <!--                                    <p th:text="${order.totalPrice+'.00'}"></p>-->
                                     <!--                                    <p th:text="${'GoodsCount:'+order.newBeeMallOrderItemVOS.count}"></p>-->
                                 </td>
@@ -88,21 +88,23 @@
                                         Pending approval
                                     </th:block>
                                     <th:block th:if="${order.orderStatus==1}">
-                                        Pay Success
+                                        <th:block th:if="${order.payType==1}">
+                                            Payment successful, delivery in progress
+                                        </th:block>
+                                        <th:block th:if="${order.takeType==0}">
+                                            Payment successful, waiting for pickup
+                                        </th:block>
                                     </th:block>
                                     <th:block th:if="${order.orderStatus==2}">
-                                        Delivery completed
-                                    </th:block>
-                                    <th:block th:if="${order.orderStatus ==3}">
-                                        Delivery successful
+                                        Order completed
                                     </th:block>
 
                                 </td>
-<!--                                <td class="product-subtotal">-->
-<!--                                    <div class="cart-shiping-update" style="border: 1px solid #595959;width: 80%;" >-->
-<!--                                        <a >finishOrder</a>-->
-<!--                                    </div>-->
-<!--                                </td>-->
+                                <td class="product-subtotal">
+                                    <div class="cart-shiping-update" style="border: 1px solid #595959;width: 80%;" th:data-order-no="${order.orderNo}"  th:if="${order.orderStatus == 1}"  onclick="updateOrder(this)" >
+                                        <a >confirm the receipt of goods</a>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -188,12 +190,17 @@
 <script th:src="@{/admin/dist/js/public.js}"></script>
 <script th:src="@{/admin/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
 <script type="text/javascript">
-    function finishOrder(orderNo) {
+    function updateOrder(eve) {
+        console.log(eve);
+        var orderNo = eve.getAttribute("data-order-no");
+        console.log(orderNo);
+
         $.ajax({
             type: 'PUT',
             url: '/orders/' + orderNo + '/finish',
             success: function (result) {
                 if (result.resultCode == 200) {
+                    alert("Confirmation of success")
                     window.location.reload();
                 } else {
                     Swal.fire({

@@ -78,9 +78,10 @@
                             <div class="login-form-container">
                                 <div class="login-register-form">
                                     <form action="#" method="post">
-                                        <input id="regLoginName" name="user-email" placeholder="Email" type="email">
+                                        <input id="regLoginName" name="user-email" placeholder="Email Or Phone Number" type="text">
                                         <input id="regPassword" type="password" name="password" placeholder="Password" >
                                         <input id="regConfirmPassword" type="password" name="password" placeholder="Confirm Password" >
+                                        <input id="regInviteCode" type="text" name="InviteCode" placeholder="Invite Code" >
                                         <input id="regVerifyCode" class="login-info-input verify-code" style="width: 200px" type="text" name="verifyCode"
                                                placeholder="请输入验证码" />
                                         <img id="regVerifyCodeImg" alt="单击图片刷新！" style="top: 16px;position: relative;margin-bottom: 30px;" th:src="@{/common/mall/kaptcha}"
@@ -279,6 +280,7 @@
             return false;
         }
 
+
         //验证
         var data ={
             "loginName":loginName,
@@ -310,12 +312,11 @@
     //注册按钮onclick事件改为register()即可
     function register() {
         var regLoginName = $("#regLoginName").val();
-        var myreg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (regLoginName == '') {
-            alert("Email is null")
+            alert("Email or Phone Number is null")
             return;
-        }else if(!myreg.test(regLoginName)){
-            alert("Email error")
+        }else if(regLoginName.length > 100){
+            alert("Email or Phone Number or error max 100")
             return;
         }
         var regPassword = $("#regPassword").val();
@@ -333,6 +334,12 @@
             return;
         }
 
+        var regInviteCode = $("#regInviteCode").val();
+        if(regInviteCode == ''){
+            alert("Invite Code is null")
+            return;
+        }
+
         var regVerifyCode = $("#regVerifyCode").val();
         if (regVerifyCode == '') {
             alert("verify Code  is null")
@@ -342,6 +349,7 @@
         var data ={
             "loginName":regLoginName,
             "password":regConfirmPassword,
+            "inviteCode":regInviteCode,
             "verifyCode":regVerifyCode,
         }
         var url = '/register';

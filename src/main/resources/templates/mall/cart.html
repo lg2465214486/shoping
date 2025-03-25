@@ -86,14 +86,14 @@
                                         <label>
                                             * Delivery method
                                         </label>
-                                        <select class="email s-email s-wid" id="deliveryMethod">
+                                        <select class="email s-email s-wid" id="deliveryMethod" onchange="deliveryMethodChange()">
                                             <option value="1">delivery</option>
                                             <option value="0">Self pickup</option>
                                         </select>
                                     </div>
                                     <div class="tax-select">
                                         <label>
-                                            * contacts
+                                            * contact person
                                         </label>
                                         <input type="text" id="contacts">
                                     </div>
@@ -103,7 +103,7 @@
                                         </label>
                                         <input type="text" id="phoneNumber">
                                     </div>
-                                    <div class="tax-select">
+                                    <div class="tax-select" id="detailedAddress">
                                         <label>
                                             detailed address
                                         </label>
@@ -163,6 +163,15 @@
 <script th:src="@{/admin/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
 
 <script type="text/javascript">
+    function deliveryMethodChange(){
+        var deliveryMethod = $("#deliveryMethod").val();
+        if (deliveryMethod == '0'){
+           $("#detailedAddress").hide();
+        }else{
+            $("#detailedAddress").show();
+        }
+    }
+
     $('#saveButton').click(function () {
         var deliveryMethod = $("#deliveryMethod").val();
         var payType = "0";
@@ -179,7 +188,7 @@
         var address = $("#address").val();
 
         if (contacts == '' || contacts.length > 255) {
-            alert("contacts value 1-255 size");
+            alert("contact person value 1-255 size");
             return
         }
 
@@ -188,7 +197,7 @@
             return
         }
 
-        if (address == '' || address.length > 255) {
+        if ((address == '' || address.length > 255) && deliveryMethod == '1') {
             alert("address value 1-255 size");
             return
         }
@@ -202,6 +211,10 @@
             img = $("#bankConfigImg").val();
             text = $("#bankConfigName").val();
         }
+        var addressDetail = "contacts：" + contacts + " , phoneNumber：" + phoneNumber + " , address：" + address
+        if(deliveryMethod == '0'){
+            addressDetail = "contacts：" + contacts + " , phoneNumber：" + phoneNumber
+        }
 
         Swal.fire({
             title: title,
@@ -214,7 +227,7 @@
                 if (flag.value) {
                     var data = {
                         "takeType": deliveryMethod,
-                        "address": "contacts：" + contacts + "\nphoneNumber：" + phoneNumber + "\naddress：" + address,
+                        "address": addressDetail,
                         "payType": payType
                     };
                     $.ajax({

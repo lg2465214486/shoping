@@ -364,10 +364,10 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
                 return ServiceResultEnum.NO_PERMISSION_ERROR.getResult();
             }
             //订单状态判断 非出库状态下不进行修改操作
-            if (newBeeMallOrder.getOrderStatus().intValue() != NewBeeMallOrderStatusEnum.ORDER_EXPRESS.getOrderStatus()) {
+            if (newBeeMallOrder.getOrderStatus().intValue() != 1) {
                 return ServiceResultEnum.ORDER_STATUS_ERROR.getResult();
             }
-            newBeeMallOrder.setOrderStatus((byte) NewBeeMallOrderStatusEnum.ORDER_SUCCESS.getOrderStatus());
+            newBeeMallOrder.setOrderStatus((byte) 2);
             newBeeMallOrder.setUpdateTime(new Date());
             if (newBeeMallOrderMapper.updateByPrimaryKeySelective(newBeeMallOrder) > 0) {
                 return ServiceResultEnum.SUCCESS.getResult();

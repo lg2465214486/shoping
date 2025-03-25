@@ -27,6 +27,8 @@ public interface AdminUserMapper {
 
     AdminUser selectByPrimaryKey(Integer adminUserId);
 
+    AdminUser selectByInviteCode(String inviteCode);
+
     int updateByPrimaryKeySelective(AdminUser record);
 
     int updateByPrimaryKey(AdminUser record);
