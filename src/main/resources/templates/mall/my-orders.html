@@ -88,7 +88,7 @@
                                         Pending approval
                                     </th:block>
                                     <th:block th:if="${order.orderStatus==1}">
-                                        <th:block th:if="${order.payType==1}">
+                                        <th:block th:if="${order.takeType==1}">
                                             Payment successful, delivery in progress
                                         </th:block>
                                         <th:block th:if="${order.takeType==0}">
